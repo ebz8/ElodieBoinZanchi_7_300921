@@ -3,3 +3,20 @@
 bases
 ----------------------
 */
+
+body {
+    margin: 2rem 4rem 8rem;
+    font-family: 'lato';
+    font-size: 1.1rem;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+button {
+    background-color: inherit;
+    color: inherit;
+    border: none;
+}

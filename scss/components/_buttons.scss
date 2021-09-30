@@ -3,3 +3,12 @@
 boutons
 ----------------------
 */
+
+.btn-principal {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    padding: 1em;
+    color: white;
+    border-radius: $arrondi-bordures;
+}

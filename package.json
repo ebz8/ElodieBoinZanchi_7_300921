@@ -1,0 +1,19 @@
+{
+  "name": "elodieboinzanchi_7_300921",
+  "version": "1.0.0",
+  "description": "P7 OpenClassrooms parcours Front End",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ebz8/ElodieBoinZanchi_7_300921.git"
+  },
+  "author": "Elodie Boin Zanchi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ebz8/ElodieBoinZanchi_7_300921/issues"
+  },
+  "homepage": "https://github.com/ebz8/ElodieBoinZanchi_7_300921#readme"
+}

@@ -9,9 +9,9 @@ mixins
 ----------------------
 */
 /**
-----------------------
+----------------------------------------------------------------------------------------
 modern-normalize v1.1.0 | MIT License | https://github.com/sindresorhus/modern-normalize 
-----------------------
+----------------------------------------------------------------------------------------
 */
 /*
 Document
@@ -20,6 +20,9 @@ Document
 /**
 Use a better box model (opinionated).
 */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 *,
 ::before,
 ::after {
@@ -282,7 +285,7 @@ summary {
 
 /**
 ----------------------
-typo
+gestion des typos
 ----------------------
 */
 /**

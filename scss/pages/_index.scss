@@ -34,6 +34,7 @@ page : index
 
     .recherche__etiquettes {
         width: 100%;
+        margin: 1rem 0;
 
         .etiquettes__liste {
             display: flex;
@@ -42,10 +43,15 @@ page : index
         }
 
         .btn-principal {
+            justify-content: center;
             width: max-content;
-            padding: 0 1rem;
+            padding: .5rem 1rem;
             font-size: .8rem;
             background-color: $couleur-trio-A;
+
+            i {
+                font-size: 1.3rem;
+            }
         }
     }
 
@@ -68,6 +74,74 @@ page : index
     
             &:nth-child(3) {
                 background-color: $couleur-trio-C;
+            }
+        }
+    }
+}
+
+// SECTION RESULTATS
+
+.resultats-recherche {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: 2rem;
+    width: 100%;
+    
+    .recette {
+        background-color: $couleur-principale;
+        border-radius: $arrondi-bordures;
+        overflow: hidden;
+        height: 22rem;
+        
+        .recette__image {
+            width: 100%;
+            height: 10rem;
+            background-color: $couleur-secondaire;
+        }
+
+        .recette__entete {
+            display: flex;
+            justify-content: space-between;
+            flex-flow: row wrap;
+            padding: 1rem;
+            width: 100%;
+            // height: 5%;
+
+
+            .recette__duree {
+                display: flex;
+                align-items: center;
+                gap: .5rem;
+                font-weight: bold;
+            }
+        }
+
+        .recette__corps {
+            display: flex;
+            width: 100%;
+            padding: 1rem;
+            font-size: .8rem;
+            // height: 40%;
+
+            .corps__ingredients {
+                width: 50%;
+
+                .ingredient {
+                    display: flex;
+                    align-items: center;
+                    gap: .3rem;
+
+                    .ingredient__nom {
+                        font-weight: bold;
+                        margin: 0;
+                    }
+                }
+            }
+
+            .corps__instructions {
+                width: 50%;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
     }

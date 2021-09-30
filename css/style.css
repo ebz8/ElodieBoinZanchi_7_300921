@@ -303,12 +303,20 @@ body {
 ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 button {
   background-color: inherit;
   color: inherit;
   border: none;
+}
+
+p, a, h1, h2, h3, h4 {
+  font-weight: normal;
+  font-size: inherit;
+  margin: 0;
+  padding: 0;
 }
 
 /**
@@ -332,10 +340,10 @@ boutons
 .btn-principal {
   display: flex;
   align-items: center;
-  gap: 1em;
+  gap: 0.8em;
   padding: 1em;
   color: white;
-  border-radius: 0.2rem;
+  border-radius: 0.3rem;
 }
 
 /**
@@ -372,6 +380,7 @@ page : index
 }
 .recherche .recherche__etiquettes {
   width: 100%;
+  margin: 1rem 0;
 }
 .recherche .recherche__etiquettes .etiquettes__liste {
   display: flex;
@@ -379,10 +388,14 @@ page : index
   gap: 0.8rem;
 }
 .recherche .recherche__etiquettes .btn-principal {
+  justify-content: center;
   width: max-content;
-  padding: 0 1rem;
+  padding: 0.5rem 1rem;
   font-size: 0.8rem;
   background-color: #3282f7;
+}
+.recherche .recherche__etiquettes .btn-principal i {
+  font-size: 1.3rem;
 }
 .recherche .recherche__mots-cles {
   display: flex;
@@ -401,6 +414,60 @@ page : index
 }
 .recherche .recherche__mots-cles .btn-principal:nth-child(3) {
   background-color: #ed6454;
+}
+
+.resultats-recherche {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  gap: 2rem;
+  width: 100%;
+}
+.resultats-recherche .recette {
+  background-color: #e7e7e7;
+  border-radius: 0.3rem;
+  overflow: hidden;
+  height: 22rem;
+}
+.resultats-recherche .recette .recette__image {
+  width: 100%;
+  height: 10rem;
+  background-color: #c7bebe;
+}
+.resultats-recherche .recette .recette__entete {
+  display: flex;
+  justify-content: space-between;
+  flex-flow: row wrap;
+  padding: 1rem;
+  width: 100%;
+}
+.resultats-recherche .recette .recette__entete .recette__duree {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: bold;
+}
+.resultats-recherche .recette .recette__corps {
+  display: flex;
+  width: 100%;
+  padding: 1rem;
+  font-size: 0.8rem;
+}
+.resultats-recherche .recette .recette__corps .corps__ingredients {
+  width: 50%;
+}
+.resultats-recherche .recette .recette__corps .corps__ingredients .ingredient {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.resultats-recherche .recette .recette__corps .corps__ingredients .ingredient .ingredient__nom {
+  font-weight: bold;
+  margin: 0;
+}
+.resultats-recherche .recette .recette__corps .corps__instructions {
+  width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /*# sourceMappingURL=style.css.map */

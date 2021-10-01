@@ -47,16 +47,32 @@ const templateRecette = {
     },
 
     itemIngredients: (ingredientEnCours, conteneur) => {
-            console.log(ingredientEnCours)
             const itemIngredient = redacDry.nouvelElementDom('li', 'ingredient')
             const nomIngredient = redacDry.nouvelElementDom('p', 'ingredient__nom')
-            nomIngredient.textContent = `${ingredientEnCours.ingredient} :`
-            const ingredientQuantite = redacDry.nouvelElementDom('span', 'ingredient__quantite')
-            ingredientQuantite.textContent = `${ingredientEnCours.quantity} ${ingredientEnCours.unit}`
-            itemIngredient.append(nomIngredient, ingredientQuantite)
+            
+            // s'il y a ni quantité ni unité de mesure :
+            if (ingredientEnCours.quantity === undefined
+                & ingredientEnCours.unit === undefined) {
+                nomIngredient.textContent = ingredientEnCours.ingredient
+                itemIngredient.append(nomIngredient)
+
+            // s'il y a seulement une quantité :
+            } else if (ingredientEnCours.quantity !== undefined
+                & ingredientEnCours.unit === undefined) {
+                nomIngredient.textContent = `${ingredientEnCours.ingredient} :`
+                const ingredientQuantite = redacDry.nouvelElementDom('span', 'ingredient__quantite')
+                ingredientQuantite.textContent = ingredientEnCours.quantity
+                itemIngredient.append(nomIngredient, ingredientQuantite)
+
+            // dans tous les autres cas :
+            } else {
+                nomIngredient.textContent = `${ingredientEnCours.ingredient} :`
+                const ingredientQuantite = redacDry.nouvelElementDom('span', 'ingredient__quantite')
+                ingredientQuantite.textContent = `${ingredientEnCours.quantity} ${ingredientEnCours.unit}`
+                itemIngredient.append(nomIngredient, ingredientQuantite)
+            }
             
             conteneur.append(itemIngredient)
-
             return itemIngredient
     },
 
@@ -80,7 +96,6 @@ const ficheRecette = (recette, conteneur) => {
     const elementBEM = 'recette'
     const ficheRecette = redacDry.nouvelElementDom('article', elementBEM)
 
-    
     templateRecette.apercuImage(elementBEM, ficheRecette)
     templateRecette.enTete(recette, elementBEM, ficheRecette)
     templateRecette.corps(recette, elementBEM, ficheRecette)
@@ -92,7 +107,6 @@ const ficheRecette = (recette, conteneur) => {
 const resultatsRecherche = (recettes) => {
     const conteneurFicheRecettes = redacDry.nouvelElementDom('section', 'resultats-recherche')
     const fichesRecettes = recettes.map(recette => ficheRecette(recette, conteneurFicheRecettes)).join('')
-
     corpsContenuPage.appendChild(conteneurFicheRecettes)
 }
 

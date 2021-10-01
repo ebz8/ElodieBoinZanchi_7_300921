@@ -440,6 +440,9 @@ page : index
   padding: 1rem;
   width: 100%;
 }
+.resultats-recherche .recette .recette__entete .recette__titre {
+  max-width: 70%;
+}
 .resultats-recherche .recette .recette__entete .recette__duree {
   display: flex;
   align-items: center;

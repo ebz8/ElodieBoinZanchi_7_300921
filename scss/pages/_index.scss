@@ -107,6 +107,10 @@ page : index
             width: 100%;
             // height: 5%;
 
+            .recette__titre {
+                max-width: 70%;
+            }
+
 
             .recette__duree {
                 display: flex;
@@ -121,10 +125,11 @@ page : index
             width: 100%;
             padding: 1rem;
             font-size: .8rem;
-            // height: 40%;
 
             .corps__ingredients {
                 width: 50%;
+                // max-height: 7rem;
+                // overflow: hidden;
 
                 .ingredient {
                     display: flex;

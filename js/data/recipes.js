@@ -23,7 +23,7 @@ const recipes = [
             {
                 "ingredient" : "Sucre",
                 "quantity" : 30,
-                "unit" : "grammes"
+                "unit" : "g"
             },
             {
                 "ingredient": "Glaçons"
@@ -42,7 +42,7 @@ const recipes = [
             {
                 "ingredient" : "Thon Rouge (ou blanc)",
                 "quantity" : 200,
-                "unit" : "grammes"
+                "unit" : "g"
             },
             {
                 "ingredient" : "Concombre",
@@ -113,12 +113,12 @@ const recipes = [
             {
                 "ingredient": "Riz blanc",
                 "quantity": 500,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Thon en miettes",
                 "quantity": 200,
-                "unit": "grammes"
+                "unit": "g"
             },{
                 "ingredient": "Tomate",
                 "quantity": 2
@@ -130,7 +130,7 @@ const recipes = [
             {
                 "ingredient": "Maïs",
                 "quantity": 300,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Vinaigrette",
@@ -155,7 +155,7 @@ const recipes = [
            {
                "ingredient": "Thon en miettes",
                "quantity": 130,
-               "unit": "grammes"
+               "unit": "g"
            },
            {
                 "ingredient": "Tomate",
@@ -169,7 +169,7 @@ const recipes = [
            {
                "ingredient": "Gruyère râpé",
                "quantity": 100,
-               "unit": "grammes"
+               "unit": "g"
            },
            {
                 "ingredient": "Moutarde de Dijon",
@@ -207,7 +207,7 @@ const recipes = [
             {
                 "ingredient": "Sucre en poudre",
                 "quantity": 100,
-                "unit":"grammes"
+                "unit":"g"
             },
             {
                 "ingredient": "Sucre vanillé",
@@ -232,7 +232,7 @@ const recipes = [
             {
                 "ingredient": "Chocolat au lait",
                 "quantity": 300,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Crème liquide",
@@ -242,7 +242,7 @@ const recipes = [
             {
                 "ingredient": "Beurre",
                 "quantity": "30",
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Fraise",
@@ -252,7 +252,7 @@ const recipes = [
         "time": 50,
         "description": "Etaler la pate dans les moules à tartelette. Faire cuire la pate 30 minutes. Découper le chocolat en morceau et le faire chauffer, y ajouter la crême liquide, ajouter le beurre et remuer jusqu'à avoir une pâte homogène. Verser la pate sur les tartelettes. Couper les fraises en 2 et les positionner sur ",
         "appliance":"Four",
-        "ustensils":["moule à tartelettes (6)", "casserolle"]
+        "ustensils":["moule à tartelettes (6)", "casserole"]
     }, {
         "id": 8,
         "name": "Brownie",
@@ -261,17 +261,17 @@ const recipes = [
            {
                 "ingredient": "Noix",
                 "quantity": "180",
-                "unit": "grammes"
+                "unit": "g"
            },
            {
                "ingredient": "Chocolat noir",
                "quantity": 150,
-               "unit": "grammes"
+               "unit": "g"
            },
            {
                "ingredient": "Beurre",
                "quantity": 120,
-               "unit": "grammes"
+               "unit": "g"
            },
            {
                 "ingredient": "Oeuf",
@@ -280,19 +280,19 @@ const recipes = [
            {
                "ingredient": "Sucre en Poudre",
                "quantity": "110",
-               "unit": "grammes"
+               "unit": "g"
            },
            {
                 "ingredient": "Farine",
                 "quantity": 90,
-                "unit": "grammes"
+                "unit": "g"
            }
 
         ], 
         "time": 60,
         "description": "Hachez les noix grossièrement. Faire fondre le chocolat avec le beurre. Mélanger les oeuf et le sucre et mélanger au chocolat. Ajouter la farine. Mélanger afin d'avoir quelque chose d'homogène puis incorporer les noix. Verser la préparation dans un moule de préférence rectangulaire. Cuire 2O à 25 minutes à 180°. Sortez du four et attendez quelques minutes pour démouler. Servir avec une boule de glace pour plus de gourmandise.",
         "appliance": "Four",
-        "ustensils": ["moule à gateaux", "casserolle"]
+        "ustensils": ["moule à gateaux", "casserole"]
     },
     {
         "id": 9,
@@ -309,7 +309,7 @@ const recipes = [
             {
                 "ingredient": "Fromage de chèvre",
                 "quantity": 150,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Vinaigre Balsamic"
@@ -348,7 +348,7 @@ const recipes = [
             {
                 "ingredient": "Oignon",
                 "quantity": 300,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Vin blanc sec",
@@ -368,12 +368,12 @@ const recipes = [
             {
                 "ingredient": "Tomates cerises",
                 "quantity": 250,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Mozzarella",
                 "quantity": 150,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Jambon de parme",
@@ -406,7 +406,7 @@ const recipes = [
             {
                 "ingredient": "Rhubarbe",
                 "quantity": 160,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Pommes",
@@ -424,7 +424,7 @@ const recipes = [
             }
         ],
         "time": 40,
-        "description": "Éplucher les fruits et les couper en morceaux, les mettre dans une casserolle en ajoutant l'eau et le sucre vanillé. Laisser cuire 15 minutes en remuant régulièrement.",
+        "description": "Éplucher les fruits et les couper en morceaux, les mettre dans une casserole en ajoutant l'eau et le sucre vanillé. Laisser cuire 15 minutes en remuant régulièrement.",
         "appliance": "Casserole",
         "ustensils": ["couteau", "économe"]
     },
@@ -436,12 +436,12 @@ const recipes = [
             {
                 "ingredient": "Mâche",
                 "quantity": 60,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Pommes de terre",
                 "quantity": 200,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Échalote",
@@ -476,7 +476,7 @@ const recipes = [
             {
                 "ingredient": "Farine de blé noir",
                 "quantity": 130,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Oeuf",
@@ -486,7 +486,7 @@ const recipes = [
             {
                 "ingredient": "Fromage à raclette",
                 "quantity": 300,
-                "unit":"grammes"
+                "unit":"g"
             },
             {
                 "ingredient": "Oignon",
@@ -495,12 +495,12 @@ const recipes = [
             {
                 "ingredient": "Beurre",
                 "quantity": 75,
-                "unit": "grammes"
+                "unit": "g"
             }
 
         ],
         "time": 100,
-        "description":"Mélanger la farine et les oeufs, faire fondre 25 grammes de beurre et ajouter à la pâte. Ajouter du sel. Laisser reposer 1 heure. Faire les galettes et laisser refroidire. Faire chauffer les saucisses avec du beurre et l'oignon. Enrouler les saucisses dans les crêpes avec une partie du fromage. Mettre le reste du fromage à raclette par dessus les crêpes. Passer four pendant 20 minutes",
+        "description":"Mélanger la farine et les oeufs, faire fondre 25 g de beurre et ajouter à la pâte. Ajouter du sel. Laisser reposer 1 heure. Faire les galettes et laisser refroidire. Faire chauffer les saucisses avec du beurre et l'oignon. Enrouler les saucisses dans les crêpes avec une partie du fromage. Mettre le reste du fromage à raclette par dessus les crêpes. Passer four pendant 20 minutes",
         "appliance": "Four",
         "ustensils":["poelle à frire","couteau"]
     },
@@ -516,7 +516,7 @@ const recipes = [
             {
                 "ingredient": "Farine",
                 "quantity": 250,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Lait",
@@ -526,12 +526,12 @@ const recipes = [
             {
                 "ingredient": "Beurre salé",
                 "quantity": 30,
-                "unit":"grammes"
+                "unit":"g"
             },
             {
                 "ingredient": "Chocolat au lait",
                 "quantity": 100,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Banane",
@@ -551,17 +551,17 @@ const recipes = [
             {
                 "ingredient": "Tomate",
                 "quantity": 500,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Mozzarella",
                 "quantity": 250,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Pennes",
                 "quantity": 500,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Basilic",
@@ -587,7 +587,7 @@ const recipes = [
             {
                 "ingredient": "Fraise",
                 "quantity": 500,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Pastèque",
@@ -657,7 +657,7 @@ const recipes = [
             {
                 "ingredient": "Sucre glace",
                 "quantity": 30,
-                "unit":"grammes"
+                "unit":"g"
             },
             {
                 "ingredient": "Banane",
@@ -677,22 +677,22 @@ const recipes = [
             {
                 "ingredient": "Tagliatelles",
                 "quantity": 500,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Lardons",
                 "quantity": 150,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Crème fraiche",
                 "quantity": 200,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Parmesan",
                 "quantity": 100,
-                "unit":"grammes"
+                "unit":"g"
             },
             {
                 "ingredient": "Huile d'olive",
@@ -713,7 +713,7 @@ const recipes = [
             {
                 "ingredient": "Spaghettis",
                 "quantity": 400,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Oignon",
@@ -722,12 +722,12 @@ const recipes = [
             {
                 "ingredient": "Coulis de tomate",
                 "quantity": 300,
-                "unit":"grammes"
+                "unit":"g"
             },
             {
                 "ingredient": "Viande hachée 1% de matière grasse",
                 "quantity": 400,
-                "unit":"grammes"
+                "unit":"g"
             },
             {
                 "ingredient": "Vin rouge",
@@ -742,7 +742,7 @@ const recipes = [
         ],
         "time": 30,
         "description":"Cuisiner la viande hachée dans une poelle à frire. Dans une autre faire cuire les oignons découpés en fins dés avec un peu de beurre. Ajouter du vin rouge. Mélanger les oigons avec la viande hachée. Faire cuire les pates le temps indiqué sur le paquet. Ajouter le coulis de tomates à la viande hachée. Une fois que les pates sont cuites, ajouter la crème fraiche à la viande hachée. Serivir.",
-        "appliance": "Casserolle.",
+        "appliance": "Casserole.",
         "ustensils":["Cuillère en bois", "louche", "couteau"]
     },
     {
@@ -753,17 +753,17 @@ const recipes = [
             {
                 "ingredient": "Beurre",
                 "quantity": 160,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Chocolat noir",
                 "quantity": 200,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Farine",
                 "quantity": 50,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Oeuf",
@@ -772,13 +772,13 @@ const recipes = [
             {
                 "ingredient": "Sucre",
                 "quantity": 150,
-                "unit": "grammes"
+                "unit": "g"
             }
         ],
         "time": 30,
         "description":"Faire fondre le chocolat et le beurre au bain marie. Dans un saladier battre les oeufs avec le sucre jusqu'à obtenir une texture de type mousse. Ajouter la farine ainsi que le mélange de beurre et chocolat fondu. Beurrez le moule à gateaux. Mettre au four préchauffé à 200° puis faites chauffer pendant 15 minutes. C'est prêt. Servir avec une boule de glace ou une crême dessert.",
         "appliance": "Four",
-        "ustensils":["moule à gateaux", "fouet", "casserolle"]
+        "ustensils":["moule à gateaux", "fouet", "casserole"]
     },
     {
         "id": 23,
@@ -788,17 +788,17 @@ const recipes = [
             {
                 "ingredient": "Pâte brisée",
                 "quantity": 200,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Lardons",
                 "quantity": 200,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Beurre",
                 "quantity": 30,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Oeuf",
@@ -828,12 +828,12 @@ const recipes = [
             {
                 "ingredient": "Thon en miettes",
                 "quantity": 160,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Maïs",
                 "quantity": 60,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Tomate",
@@ -846,7 +846,7 @@ const recipes = [
             {
                 "ingredient": "Macaronis",
                 "quantity": 300,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Mayonnaise",
@@ -867,22 +867,22 @@ const recipes = [
             {
                 "ingredient": "Sucre",
                 "quantity": 100,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Beurre",
                 "quantity": 100,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Farine",
                 "quantity": 100,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Chocolat noir en pepites",
                 "quantity": 100,
-                "unit":"grammes"
+                "unit":"g"
             },
             {
                 "ingredient": "Oeuf",
@@ -951,12 +951,12 @@ const recipes = [
             {
                 "ingredient": "Beurre salé",
                 "quantity": 50,
-                "unit": "grammes"
+                "unit": "g"
             }
         ],
         "time": 15,
         "description":"Faire fondre l'oseille avec du beurre demi sel, ajouter un litre d'eau. Ajouter les vermicelles. Laisser cuire. une foit prêt, sortir du feu et après 5 minutes ajouter le jaune d'oeuf et la crême fraîche",
-        "appliance": "Casserolle",
+        "appliance": "Casserole",
         "ustensils":["couteau","cuillère en bois"]
     },
     {
@@ -971,17 +971,17 @@ const recipes = [
             {
                 "ingredient": "Pommes de terre",
                 "quantity": 400,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Oseille",
                 "quantity": 75,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Beurre",
                 "quantity": 50,
-                "unit":"grammes"
+                "unit":"g"
             },
             {
                 "ingredient": "Crême fraîche",
@@ -990,9 +990,9 @@ const recipes = [
             }
         ],
         "time": 80,
-        "description":"Emincer les blanc de poireaux et les faire chauffer dans 25 grammes de beurre. AJouter les pommes de terres coupées en morceaux. Ajouter l'eau et laisser mijoter pour 45 minutes. Chauffer l'oseille avec le beurre restant puis incorporer le tout. Mixez. Ajoutez la crème. Bon appetit.",
+        "description":"Emincer les blanc de poireaux et les faire chauffer dans 25 g de beurre. AJouter les pommes de terres coupées en morceaux. Ajouter l'eau et laisser mijoter pour 45 minutes. Chauffer l'oseille avec le beurre restant puis incorporer le tout. Mixez. Ajoutez la crème. Bon appetit.",
         "appliance": "Mixer",
-        "ustensils":["casserolle","couteau"]
+        "ustensils":["casserole","couteau"]
     },
     {
         "id": 29,
@@ -1031,9 +1031,9 @@ const recipes = [
         "servings": 4,
         "ingredients": [
             {
-                "ingredient": "Pois Cassé",
+                "ingredient": "Pois cassés",
                 "quantity": 500,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Oignon",
@@ -1048,7 +1048,7 @@ const recipes = [
         "time": 60,
         "description":"Mettre tous les ingrédients dans une cocotte. ajouter de l'eau pour recouvrir l'ensemble et laisser cuirre à petit feur pour 1 heure. Passer au mixer. Salez, poivrez. C'est prêt",
         "appliance": "Mixer",
-        "ustensils":["casserolle", "cuillère en bois"]
+        "ustensils":["casserole", "cuillère en bois"]
     },
     {
         "id": 31,
@@ -1066,17 +1066,17 @@ const recipes = [
             {
                 "ingredient": "Haricots verts",
                 "quantity": 150,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Petits poids",
                 "quantity": 100,
-                "unit":"grammes"
+                "unit":"g"
             },
             {
                 "ingredient": "Lardons",
                 "quantity": 150,
-                "unit": "grammes"
+                "unit": "g"
             }
         ],
         "time": 60,
@@ -1107,7 +1107,7 @@ const recipes = [
             {
                 "ingredient": "Gruyère",
                 "quantity": 100,
-                "unit":"grammes"
+                "unit":"g"
             },
             {
                 "ingredient": "Lait",
@@ -1168,7 +1168,7 @@ const recipes = [
             {
                 "ingredient": "Patate douce",
                 "quantity": 800,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Crème fraîche",
@@ -1184,7 +1184,7 @@ const recipes = [
             }
         ],
         "time": 25,
-        "description":"Eplucher les patates douces et coupez les en morceaux. Les faire cuire durant 20 minute dans une casserolle d'eau bouillante. Passer au mixer en ajoutant la crème et l'huile d'olive à son gout. Salez, poivrez. Pressez l'orange et ajouter le jus à l'ensemble. Servir.",
+        "description":"Eplucher les patates douces et coupez les en morceaux. Les faire cuire durant 20 minute dans une casserole d'eau bouillante. Passer au mixer en ajoutant la crème et l'huile d'olive à son gout. Salez, poivrez. Pressez l'orange et ajouter le jus à l'ensemble. Servir.",
         "appliance": "Mixer",
         "ustensils":["couteau", "économe", "cuillère en bois"]
     },
@@ -1204,7 +1204,7 @@ const recipes = [
             {
                 "ingredient": "Beurre",
                 "quantity": 20,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Crème fraîche",
@@ -1253,7 +1253,7 @@ const recipes = [
             {
                 "ingredient": "Gruyère",
                 "quantity": 40,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Maïzena",
@@ -1278,7 +1278,7 @@ const recipes = [
             {
                 "ingredient": "Viande hachée",
                 "quantity": 600,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Huile d'olives",
@@ -1297,7 +1297,7 @@ const recipes = [
             {
                 "ingredient": "Gruyère",
                 "quantity": 50,
-                "unit": "grammes"
+                "unit": "g"
             }
             
         ],
@@ -1328,7 +1328,7 @@ const recipes = [
             {
                 "ingredient": "Sucre roux",
                 "quantity": 75,
-                "unit": "grammes"
+                "unit": "g"
             }
         ],
         "time": 20,
@@ -1348,17 +1348,17 @@ const recipes = [
             {
                 "ingredient": "Farine",
                 "quantity": 100,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Beurre",
                 "quantity": 50,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Sucre roux",
                 "quantity": 80,
-                "unit":"grammes"
+                "unit":"g"
             }
         ],
         "time": 40,
@@ -1408,7 +1408,7 @@ const recipes = [
             {
                 "ingredient": "Chocolat noir",
                 "quantity": 100,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Sucre vanillé",
@@ -1418,7 +1418,7 @@ const recipes = [
         ],
         "time": 20,
         "description":"Séparer les blancs d'oeufs. Faire fondre le chocolat au bain marie. Ajouter les jaunes et le sucre au chocolat hors du feu. Battre les blancs en neige. Ajouter les blancs au mélange de chocolat. Mélangez délicatement avec une spatule. Servir dans un plat ou dans des verres. Mettre au frais",
-        "appliance": "Casserolle",
+        "appliance": "Casserole",
         "ustensils":["fouet", "spatule", "verres"]
     }, 
     {
@@ -1429,7 +1429,7 @@ const recipes = [
             {
                 "ingredient": "Chocolat",
                 "quantity": 200,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Oeuf",
@@ -1458,17 +1458,17 @@ const recipes = [
             {
                 "ingredient": "Pâte brisée",
                 "quantity": 200,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Sucre",
                 "quantity": 150,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Beurre fondu",
                 "quantity": 100,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Oeuf",
@@ -1496,27 +1496,27 @@ const recipes = [
             {
                 "ingredient": "Chocolat",
                 "quantity": 200,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Sucre",
                 "quantity": 100,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Beurre",
                 "quantity": 50,
-                "unit":"grammes"
+                "unit":"g"
             },
             {
                 "ingredient": "Farine",
                 "quantity": 40,
-                "unit": "grammes"
+                "unit": "g"
             }
         ],
         "time": 15,
         "description":"Mélanger la farine et le beurre fondu en ajoutant le lait peu à peu. Ajouter du sucre après la cuisson. Bien mélanger. Ajouter le chocolat en morceaux et laisser chauffer 8 minutes en mélangeant avec une cuillère en bois. Mettre dans des verres",
-        "appliance": "Casserolle",
+        "appliance": "casserole",
         "ustensils":["cuillère en bois"]
     },
     {
@@ -1536,17 +1536,17 @@ const recipes = [
             {
                 "ingredient": "Farine",
                 "quantity": 30,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Sucre",
                 "quantity": 80,
-                "unit":"grammes"
+                "unit":"g"
             }
         ],
         "time": 30,
         "description":"Faire bouillir le lait ( on peut y ajouter de l'essence de vanille. Battre les oeufs et le sucre, ajouter la farine puis finalement ajouter le lait chaud. Remettre à feu doux pour faire épaissir en remuant pendant 5 à 10 minutes.",
-        "appliance": "Casserolle",
+        "appliance": "Casserole",
         "ustensils":["fouet","saladier"]
     },
     {
@@ -1557,12 +1557,12 @@ const recipes = [
             {
                 "ingredient": "Farine",
                 "quantity": 250,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Sucre",
                 "quantity": 150,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Sucre vanillé",
@@ -1581,7 +1581,7 @@ const recipes = [
             {
                 "ingredient": "Pruneaux",
                 "quantity": 100,
-                "unit": "grammes"
+                "unit": "g"
             }
         ],
         "time": 60,
@@ -1597,17 +1597,17 @@ const recipes = [
             {
                 "ingredient": "Jus de citron",
                 "quantity": 100,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Mascarpone",
                 "quantity": 250,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Sucre",
                 "quantity": 100,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Crème Fraîche",
@@ -1647,7 +1647,7 @@ const recipes = [
             {
                 "ingredient": "Gruyère",
                 "quantity": 200,
-                "unit": "grammes"
+                "unit": "g"
             }
         ],
         "time": 40,
@@ -1696,7 +1696,7 @@ const recipes = [
             {
                 "ingredient": "Pâte feuilletée",
                 "quantity": 400,
-                "unit":"grammes"
+                "unit":"g"
             },
             {
                 "ingredient": "Oeuf",
@@ -1705,17 +1705,17 @@ const recipes = [
             {
                 "ingredient": "Poudre d'amendes",
                 "quantity": 500,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Beurre",
                 "quantity": 500,
-                "unit": "grammes"
+                "unit": "g"
             },
             {
                 "ingredient": "Sucre glace",
                 "quantity": 500,
-                "unit":"grammes"
+                "unit":"g"
             }
         ],
         "time": 60,

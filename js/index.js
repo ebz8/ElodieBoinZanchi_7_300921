@@ -8,7 +8,7 @@ const corpsContenuPage = document.querySelector('.js-document') // main
 //////// OUTILS ////////
 ////////////////////////
 
-const utilitaires = {
+const util = {
     recupListeIngredients: (fichesRecettes) => {
         let listeIngredients = new Set()
 
@@ -18,8 +18,7 @@ const utilitaires = {
             })
         })
 
-        console.log(listeIngredients)
-        return (listeIngredients)
+        return listeIngredients
     },
 
     recupListeAppareils: (fichesRecettes) => {
@@ -29,8 +28,7 @@ const utilitaires = {
             listeAppareils.add(recette.appliance.toLowerCase())
         })
     
-        console.log(listeAppareils)
-        return (listeAppareils)
+        return listeAppareils
     },
     
     recupListeUstensiles: (fichesRecettes) => {
@@ -42,8 +40,7 @@ const utilitaires = {
             })
         })
     
-        console.log(listeUstensiles)
-        return (listeUstensiles)
+        return listeUstensiles
     },
 
 //
@@ -74,16 +71,93 @@ const redacDry = {
         // element.innerHTML = template
         conteneur.appendChild(element)
         return element
-    }
+    },
+
+    definirAttributs: (element, attributs) => {
+        // eslint-disable-next-line prefer-const
+        for (let cle in attributs) {
+          element.setAttribute(cle, attributs[cle])
+        }
+      },
 }
 
 //////////////////////////////////
 // FABRIQUE DES ÉLEMENTS DU DOM //
 //////////////////////////////////
 
-// const templateMenuSelect = {
+const templateRecherches = {
+    barreDeRecherche: (elementBEM, conteneur) => {
+        const formulaireRecherche = redacDry.nouvelElementDom('form', elementBEM + '__barre')
+        const saisieFormulaireRecherche = redacDry.nouvelElementDom('input', elementBEM + '__saisie')
+        redacDry.definirAttributs(saisieFormulaireRecherche, {
+            type: 'search',
+            placeholder: 'Rechercher un ingrédient, appareil, ustensile ou une recette'})
 
-// }
+        const btnLoupe = redacDry.nouvelElementDom('button', elementBEM + '__btn')
+        const btnIcone = redacDry.nouvelElementDom('i', 'fas fa-search')
+        redacDry.definirAttributs(btnLoupe, {
+            type: 'button',
+            'aria-label': 'Lancer la recherche'})
+        btnLoupe.append(btnIcone)
+
+        formulaireRecherche.append(saisieFormulaireRecherche, btnLoupe)
+        conteneur.appendChild(formulaireRecherche)
+
+        return formulaireRecherche
+    },
+
+    etiquette: (conteneur, ingredientNom) => {
+        const etiquette = redacDry.nouvelElementDom('li', 'btn-principal')
+        const nomMotCle = redacDry.nouvelElementDom('p', null)
+        nomMotCle.textContent = ingredientNom
+
+        const btnFermeture = redacDry.nouvelElementDom('button', null)
+        const btnIcone = redacDry.nouvelElementDom('i', 'far fa-times-circle')
+        btnFermeture.append(btnIcone)
+
+        etiquette.append(nomMotCle, btnFermeture)
+        conteneur.appendChild(etiquette)
+
+        return etiquette
+    },
+
+    etiquettes: (elementBEM, conteneur) => {
+        const conteneurBEM = 'etiquettes'
+        const conteneurEtiquettes = redacDry.nouvelElementDom('div', elementBEM + `__${conteneurBEM}`)
+        const listeEtiquettes = redacDry.nouvelElementDom('ul', conteneurBEM + '__liste')
+        conteneurEtiquettes.append(listeEtiquettes)
+
+        // créer un li pour chaque étiquette
+        templateRecherches.etiquette(listeEtiquettes, 'Coco')
+
+        conteneur.appendChild(conteneurEtiquettes)
+
+        return conteneurEtiquettes
+    },
+
+    btnSelectMotsCles: (menuNom, menuListe, conteneur) => {
+        const btnSelect = redacDry.nouvelElementDom('button', 'btn-principal')
+        btnSelect.textContent = menuNom
+        const btnIcone = redacDry.nouvelElementDom('i', 'fas fa-chevron-down')
+        btnSelect.append(btnIcone)
+
+        conteneur.appendChild(btnSelect)
+
+        console.log(menuListe)
+        return btnSelect
+    },
+
+    selectMotsCles: (elementBEM, conteneur) => {
+        const conteneurBtnSelect = redacDry.nouvelElementDom('div', elementBEM + '__mots-cles')
+
+        templateRecherches.btnSelectMotsCles('Ingredients', util.recupListeIngredients(recettes), conteneurBtnSelect)
+        templateRecherches.btnSelectMotsCles('Appareils', util.recupListeAppareils(recettes), conteneurBtnSelect)
+        templateRecherches.btnSelectMotsCles('Ustensiles', util.recupListeUstensiles(recettes), conteneurBtnSelect)
+
+        conteneur.appendChild(conteneurBtnSelect)
+        return conteneurBtnSelect
+    }
+}
 
 const templateRecette = {
     apercuImage: (elementBEM, conteneur) => {
@@ -153,10 +227,6 @@ const templateRecette = {
     }
 }
 
-/////////////////////////
-/// GENERATION DU DOM ///
-/////////////////////////
-
 const ficheRecette = (recette, conteneur) => {
     const elementBEM = 'recette'
     const ficheRecette = redacDry.nouvelElementDom('article', elementBEM)
@@ -170,19 +240,32 @@ const ficheRecette = (recette, conteneur) => {
     return ficheRecette
 }
 
-/////////////////////////////
-// GESTION DE L'AFFICHAGE  //
-/////////////////////////////
+/////////////////////////
+/// GENERATION DU DOM ///
+/////////////////////////
 
-const resultatsRecherche = (recettes) => {
+const sectionRecherche = () => {
+    const elementBEM = 'recherche'
+    const conteneurSection = redacDry.nouvelElementDom('section', `${elementBEM}`)
+
+    templateRecherches.barreDeRecherche(elementBEM, conteneurSection)
+    templateRecherches.etiquettes(elementBEM, conteneurSection)
+    templateRecherches.selectMotsCles(elementBEM, conteneurSection)
+
+    corpsContenuPage.appendChild(conteneurSection)
+}
+
+sectionRecherche()
+
+
+const sectionResultatsRecherche = (recettes) => {
     const conteneurFicheRecettes = redacDry.nouvelElementDom('section', 'resultats-recherche')
     const resultatsFichesVisibles = recettes.forEach(recette => ficheRecette(recette, conteneurFicheRecettes))
     corpsContenuPage.appendChild(conteneurFicheRecettes)
-    // console.log(Array.from(resultatsFichesVisibles))
 
     return conteneurFicheRecettes
 }
-resultatsRecherche(recettes)
+sectionResultatsRecherche(recettes)
 
 
 
@@ -196,58 +279,16 @@ resultatsRecherche(recettes)
 // INITIALISATION ET STRUCTURE DES DONNEES
 // dupliquer le tableau des recettes
 const ensembleFiches = [...recettes]
-// console.log(ensembleFiches)
 
+// récupérer l'ensemble des fiches affichées dans le DOM
 let resultatsFichesVisibles = ensembleFiches
 console.log(resultatsFichesVisibles)
 
-// récupérer l'ensemble des fiches affichées dans le DOM
-// const resultatsFichesVisibles = []
-
 // CONSTRUCTION DU MENU
-// récupérer les ingrédients (123)
-const recupListeIngredients = (fichesRecettes) => {
-    let listeIngredients = new Set()
 
-    fichesRecettes.map(recette => {
-        recette.ingredients.map((ingredients) => {
-            listeIngredients.add(ingredients.ingredient.toLowerCase())
-        })
-    })
-
-    console.log(listeIngredients)
-    return (listeIngredients)
-}
-recupListeIngredients(resultatsFichesVisibles)
-
-// récupérer les appareils (12)
-
-const recupListeAppareils = (fichesRecettes) => {
-    let listeAppareils = new Set()
-
-    fichesRecettes.map(recette => {
-        listeAppareils.add(recette.appliance.toLowerCase())
-    })
-
-    console.log(listeAppareils)
-    return (listeAppareils)
-}
-recupListeAppareils(resultatsFichesVisibles)
-
-// récupérer les ustensiles (25)
-const recupListeUstensiles = (fichesRecettes) => {
-    let listeUstensiles = new Set()
-
-    fichesRecettes.map(recette => {
-        recette.ustensils.map((ustensile) => {
-            listeUstensiles.add(ustensile.toLowerCase())
-        })
-    })
-
-    console.log(listeUstensiles)
-    return (listeUstensiles)
-}
-recupListeUstensiles(resultatsFichesVisibles)
+util.recupListeIngredients(resultatsFichesVisibles)
+util.recupListeAppareils(resultatsFichesVisibles)
+util.recupListeUstensiles(resultatsFichesVisibles)
 
 // BARRE DE RECHERCHE
 

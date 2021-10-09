@@ -540,7 +540,7 @@ const recipes = [
         ],
         "time": 60,
         "description":"Mélangez dans un saladier, la farine, les oeufs, et le lait. Battez jusqu'à avoir une masse homogène. Pendant ce temps faites fondre le beurre et ajoutez en une partie à la pâte à crêpes. Faire fondre le chocolat ( avec le reste du beurre salé ). Lorsque vous chauffez les crêpes. Ajouter le chocolat fondu et les bananes coupées en rondelles. Ajoutez une touche de chantilly pour les gourmands",
-        "appliance": "Poële à crêpe",
+        "appliance": "Poêle à crêpes",
         "ustensils":["saladier", "louche", "cuillère en bois"]
     },
     {
@@ -1081,7 +1081,7 @@ const recipes = [
         ],
         "time": 60,
         "description":"Découper en cubes les carottes et pommes de terre. Faire revenir dans du beurre. Ajouter les lardons, une fois les lardons dorés, ajouter un grand verre d'eau. Ajouter les petit poids et les haricots verts ( tous deux pré cuits ). Ajouter Sel, poivre, thyms et laurier",
-        "appliance": "Poële",
+        "appliance": "Poêle",
         "ustensils":["Couteau", "économe"]
     },
     {

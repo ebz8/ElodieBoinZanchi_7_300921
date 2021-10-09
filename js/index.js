@@ -1,10 +1,66 @@
 import {recettes} from './data/recipes.js'
 
-// DOM de base
+// DOM DE BASE
 const corpsPage = document.querySelector('.js-page') // body
 const corpsContenuPage = document.querySelector('.js-document') // main
 
-// outils
+////////////////////////
+//////// OUTILS ////////
+////////////////////////
+
+const utilitaires = {
+    recupListeIngredients: (fichesRecettes) => {
+        let listeIngredients = new Set()
+
+        fichesRecettes.map(recette => {
+            recette.ingredients.map((ingredients) => {
+                listeIngredients.add(ingredients.ingredient.toLowerCase())
+            })
+        })
+
+        console.log(listeIngredients)
+        return (listeIngredients)
+    },
+
+    recupListeAppareils: (fichesRecettes) => {
+        let listeAppareils = new Set()
+    
+        fichesRecettes.map(recette => {
+            listeAppareils.add(recette.appliance.toLowerCase())
+        })
+    
+        console.log(listeAppareils)
+        return (listeAppareils)
+    },
+    
+    recupListeUstensiles: (fichesRecettes) => {
+        let listeUstensiles = new Set()
+    
+        fichesRecettes.map(recette => {
+            recette.ustensils.map((ustensile) => {
+                listeUstensiles.add(ustensile.toLowerCase())
+            })
+        })
+    
+        console.log(listeUstensiles)
+        return (listeUstensiles)
+    },
+
+//
+//     triOrdreAlphabetique: (tableau) => {
+//         tableau.sort((a, b) => {
+//           const titreA = a.title.toLowerCase()
+//           const titreB = b.title.toLowerCase()
+//           if (titreA < titreB) {
+//             return -1
+//           } if (titreA > titreB) {
+//             return 1
+//           } else {
+//             return 0
+//           }
+//         })
+//       }
+}
 
 const redacDry = {
     nouvelElementDom: (balise, classe) => {
@@ -21,8 +77,13 @@ const redacDry = {
     }
 }
 
+//////////////////////////////////
+// FABRIQUE DES ÉLEMENTS DU DOM //
+//////////////////////////////////
 
-// fabrique du DOM
+// const templateMenuSelect = {
+
+// }
 
 const templateRecette = {
     apercuImage: (elementBEM, conteneur) => {
@@ -92,10 +153,15 @@ const templateRecette = {
     }
 }
 
+/////////////////////////
+/// GENERATION DU DOM ///
+/////////////////////////
+
 const ficheRecette = (recette, conteneur) => {
     const elementBEM = 'recette'
     const ficheRecette = redacDry.nouvelElementDom('article', elementBEM)
 
+    // ficheRecette.setAttribute('id', `${recette.id}`)
     templateRecette.apercuImage(elementBEM, ficheRecette)
     templateRecette.enTete(recette, elementBEM, ficheRecette)
     templateRecette.corps(recette, elementBEM, ficheRecette)
@@ -104,13 +170,18 @@ const ficheRecette = (recette, conteneur) => {
     return ficheRecette
 }
 
+/////////////////////////////
+// GESTION DE L'AFFICHAGE  //
+/////////////////////////////
+
 const resultatsRecherche = (recettes) => {
     const conteneurFicheRecettes = redacDry.nouvelElementDom('section', 'resultats-recherche')
-    const fichesRecettes = recettes.map(recette => ficheRecette(recette, conteneurFicheRecettes)).join('')
+    const resultatsFichesVisibles = recettes.forEach(recette => ficheRecette(recette, conteneurFicheRecettes))
     corpsContenuPage.appendChild(conteneurFicheRecettes)
+    // console.log(Array.from(resultatsFichesVisibles))
+
+    return conteneurFicheRecettes
 }
-
-
 resultatsRecherche(recettes)
 
 
@@ -118,32 +189,79 @@ resultatsRecherche(recettes)
 
 
 
-// const ficheRecette (recette, conteneur) => {
-//     // template de la fiche recette
-//     const elementBEM = 'recette'
-//     const ficheRecette = redacDry.nouvelElementDom('article', elementBEM)
-//     const recetteImage = redacDry.appendElementDom('div', elementBEM + '__image', ficheRecette)
+//////////////////
+// essai algo 1 //
+//////////////////
 
-//     // en-tête
-//     templateEnTete () {
-//         const titre = redacDry.nouvelElementDom('h2', recette.name)
+// INITIALISATION ET STRUCTURE DES DONNEES
+// dupliquer le tableau des recettes
+const ensembleFiches = [...recettes]
+// console.log(ensembleFiches)
 
-//     }
-//     const recetteEnTete = redacDry.appendElementDom('div', elementBEM + '__entete', ficheRecette)
-//     // corps
-//     const recetteCorps = redacDry.appendElementDom('div', elementBEM + '__corps', ficheRecette)
+let resultatsFichesVisibles = ensembleFiches
+console.log(resultatsFichesVisibles)
 
+// récupérer l'ensemble des fiches affichées dans le DOM
+// const resultatsFichesVisibles = []
 
-//     conteneur.appendChild(ficheRecette)
-//     return ficheRecette
-// }
+// CONSTRUCTION DU MENU
+// récupérer les ingrédients (123)
+const recupListeIngredients = (fichesRecettes) => {
+    let listeIngredients = new Set()
 
-// const resultatsRecherche = (recettes) => {
-//     const conteneurFicheRecettes = redacDry.nouvelElementDom('section', 'resultats-recherche')
-//     const fichesRecettes = recettes.map(recette => ficheRecette(recette, conteneurFicheRecettes)).join('')
+    fichesRecettes.map(recette => {
+        recette.ingredients.map((ingredients) => {
+            listeIngredients.add(ingredients.ingredient.toLowerCase())
+        })
+    })
 
-//     corpsContenuPage.appendChild(conteneurFicheRecettes)
-// }
+    console.log(listeIngredients)
+    return (listeIngredients)
+}
+recupListeIngredients(resultatsFichesVisibles)
 
+// récupérer les appareils (12)
 
-// resultatsRecherche(recettes)
+const recupListeAppareils = (fichesRecettes) => {
+    let listeAppareils = new Set()
+
+    fichesRecettes.map(recette => {
+        listeAppareils.add(recette.appliance.toLowerCase())
+    })
+
+    console.log(listeAppareils)
+    return (listeAppareils)
+}
+recupListeAppareils(resultatsFichesVisibles)
+
+// récupérer les ustensiles (25)
+const recupListeUstensiles = (fichesRecettes) => {
+    let listeUstensiles = new Set()
+
+    fichesRecettes.map(recette => {
+        recette.ustensils.map((ustensile) => {
+            listeUstensiles.add(ustensile.toLowerCase())
+        })
+    })
+
+    console.log(listeUstensiles)
+    return (listeUstensiles)
+}
+recupListeUstensiles(resultatsFichesVisibles)
+
+// BARRE DE RECHERCHE
+
+// écoute de la saisie dans le champs de recherche (onChange)
+// nettoyer les caractères spéciaux
+// gérer plusieurs mots ou chercher l'ensemble comme une expression ?
+// const saisieBarreRecherche = 
+
+// pour chaque fiche récupérer le contenu de titre / ingredient / recette et transformer en string
+// TRI FUSION : rechercher si correspondance avec [saisieBarreRecherche]
+
+// en récupérant l'id de chaque fiche (find)
+// retirer les fiches qui ne correspondent pas et les push dans [resultatsFichesNonRetenues]
+// actualiser affichage [resultatsFichesVisibles]
+
+// ACTUALISER LE MENU
+

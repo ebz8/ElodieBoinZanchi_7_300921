@@ -64,6 +64,10 @@ page : index
             padding: 1.5rem 1rem;
             justify-content: space-between;
 
+            &[open] {
+                min-width: 35rem;
+            }
+
             &:nth-child(1) {
                 background-color: $couleur-trio-A;
             }
@@ -74,6 +78,43 @@ page : index
     
             &:nth-child(3) {
                 background-color: $couleur-trio-C;
+            }
+        }
+
+        .btn-select__apercu {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+
+            &.inactif {
+                display: none;
+            }
+        }
+
+        .btn-select__liste {
+            display: flex;
+            justify-content: space-between;
+            flex-flow: row wrap;
+            max-height: 25rem;
+            gap: .5rem;
+
+            .btn-select__item {
+                width: 30%;
+                // text-transform: capitalize;
+            }
+
+            &.inactif {
+                display: none;
+            }
+        }
+
+        .btn-select__saisie {
+            width: 100%;
+            background-color: transparent;
+            border: none;
+
+            &.inactif {
+                display: none;
             }
         }
     }
@@ -155,3 +196,7 @@ page : index
         }
     }
 }
+
+// .inactif {
+//     display: none;
+// }

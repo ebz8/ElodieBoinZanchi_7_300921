@@ -88,7 +88,6 @@ const redacDry = {
     },
 
     definirAttributs: (element, attributs) => {
-        // eslint-disable-next-line prefer-const
         for (let cle in attributs) {
           element.setAttribute(cle, attributs[cle])
         }

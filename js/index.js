@@ -43,6 +43,7 @@ const util = {
         return listeUstensiles
     },
 
+    // retourne pour chaque recette, réuni en une chaîne de caractères : id, titre, description, ingrédients
     recupContenuPrincipalRecette: (fichesRecettes) => {
         const tableauContenuxPrincipaux = []
 
@@ -57,28 +58,19 @@ const util = {
             })
             tableauContenuxPrincipaux.push(contenuPrincipalRecette)
         })
-        // console.log(tableauContenuxPrincipaux)
         return tableauContenuxPrincipaux
     },
 
-    // changer la casse de la première lettre d'une chaîne de caractères en majuscule
+    // (casse) majuscule pour la première lettre d'une chaîne de caractères
     capitalize: (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
+    },
+
+    // matcher par id les fiches simplifiées retenues en résultats de recherche et fiches complètes du json
+    rechercheRecetteParId: (id) => {
+        const recetteIdCorrespondante = recettes.filter((recette) => id.includes(recette.id))
+        return recetteIdCorrespondante
     }
-    
-//     triOrdreAlphabetique: (tableau) => {
-//         tableau.sort((a, b) => {
-//           const titreA = a.title.toLowerCase()
-//           const titreB = b.title.toLowerCase()
-//           if (titreA < titreB) {
-//             return -1
-//           } if (titreA > titreB) {
-//             return 1
-//           } else {
-//             return 0
-//           }
-//         })
-//       }
 }
 
 const redacDry = {
@@ -87,10 +79,10 @@ const redacDry = {
         element.className = classe
         return element
     },
+
     appendElementDom: (balise, classe, conteneur) => {
         const element = document.createElement(balise)
         element.className = classe
-        // element.innerHTML = template
         conteneur.appendChild(element)
         return element
     },
@@ -125,10 +117,8 @@ const templateRecherches = {
         return formulaireRecherche
     },
 
+    // TODO: gérer la couleur des étiquettes
     etiquette: (conteneur, ingredientNom) => {
-
-        // TODO: gérer la couleur des étiquettes
-
         const etiquette = redacDry.nouvelElementDom('li', 'btn-principal')
         const nomMotCle = redacDry.nouvelElementDom('p', null)
         nomMotCle.textContent = ingredientNom
@@ -151,55 +141,85 @@ const templateRecherches = {
 
         // TODO: créer un li pour chaque étiquette
         templateRecherches.etiquette(listeEtiquettes, 'Coco')
-
         conteneur.appendChild(conteneurEtiquettes)
 
         return conteneurEtiquettes
     },
 
+    listeBtnSelectMotsCles: (menuListe, btnSelectListe, elementBEM) => {
+        // btnSelectListe.innerHTML = ''
+        // console.log(btnSelecListe)
+
+        menuListe.forEach(motCle => {
+            const itemListe = redacDry.nouvelElementDom('li', elementBEM + '__item')
+            itemListe.textContent = util.capitalize(motCle)
+            btnSelectListe.appendChild(itemListe)
+        })
+    },
+
+    // actualisationListeBtnSelectMotsCles: (tableauMenuListe) => {
+    //     let menuListe = ''
+    //     const btnSelectApercu = document.querySelectorAll('.btn-select__apercu')
+
+    //     btnSelectApercu.forEach(btn => {
+    //         switch (btn.textContent) {
+    //                     case 'Ingrédients':
+    //                         menuListe = util.recupListeIngredients(tableauMenuListe)
+    //                         templateRecherches.listeBtnSelectMotsCles(menuListe, btn, 'btn-select')
+    //                         console.log(menuListe)
+    //                         break
+    //                         case 'Appareils':
+    //                         menuListe = util.recupListeAppareils(tableauMenuListe)
+    //                         console.log(menuListe)
+    //                         templateRecherches.listeBtnSelectMotsCles(menuListe, btn, 'btn-select')
+    //                         break
+    //                         case 'Ustensiles':
+    //                         menuListe = util.recupListeUstensiles(tableauMenuListe)
+    //                         console.log(menuListe)
+    //                         templateRecherches.listeBtnSelectMotsCles(menuListe, btn, 'btn-select')
+    //                         break
+    //                 }
+    //     })
+    // },
+
     btnSelectMotsCles: (menuNom, menuListe, conteneur) => {
         const elementBEM = 'btn-select'
         const conteneurbtnSelect = redacDry.nouvelElementDom('details', 'btn-principal')
+
         const btnSelectApercu = redacDry.nouvelElementDom('summary', elementBEM + '__apercu')
         btnSelectApercu.textContent = menuNom
         const btnIcone = redacDry.nouvelElementDom('i', 'fas fa-chevron-down')
+
         btnSelectApercu.append(btnIcone)
         conteneurbtnSelect.append(btnSelectApercu)
 
         // génération contenu pour bouton déployé mais dissumulé
         const btnSelectInput = redacDry.nouvelElementDom('input', elementBEM + '__saisie inactif')
-        // conteneurbtnSelect.append(btnIcone)
+        // TODO : conteneurbtnSelect.append(btnIcone)
         const btnSelectListe = redacDry.nouvelElementDom('ul', elementBEM + `__liste inactif`)
 
-        // menu select déployé
+        // génération des items de la liste (liste de mots clés)
+        templateRecherches.listeBtnSelectMotsCles(menuListe, btnSelectListe, elementBEM)
+
+        // TODO : gestion des états du menu déployé (à écrire à part)
         conteneurbtnSelect.addEventListener('click', () => {
             conteneurbtnSelect.setAttribute('open', '')
             conteneurbtnSelect.classList.remove('inactif')
             btnSelectApercu.classList.add('inactif')
             btnSelectInput.classList.remove('inactif')
-            btnSelectListe.classList.remove('inactif')
-            // btnSelectApercu.setAttribute('aria-hidden', 'true')
-            // const btnSelectInput = redacDry.nouvelElementDom('input', elementBEM + '__saisie')
-            // const btnSelectListe = redacDry.nouvelElementDom('ul', elementBEM + `__liste`)
-            menuListe.forEach(motCle => {
-                const itemListe = redacDry.nouvelElementDom('li', elementBEM + '__item')
-                itemListe.textContent = util.capitalize(motCle)
-                btnSelectListe.appendChild(itemListe)
-            })
-            
+            btnSelectListe.classList.remove('inactif')  
         })      
-
+        
         conteneurbtnSelect.append(btnSelectInput, btnSelectListe)
         conteneur.appendChild(conteneurbtnSelect)
 
-        console.log(menuListe)
         return conteneurbtnSelect
     },
 
     selectMotsCles: (elementBEM, conteneur) => {
         const conteneurBtnSelect = redacDry.nouvelElementDom('div', elementBEM + '__mots-cles')
 
-        templateRecherches.btnSelectMotsCles('Ingrédients', util.recupListeIngredients(recettes), conteneurBtnSelect)
+        templateRecherches.btnSelectMotsCles('Ingrédients',util.recupListeIngredients(recettes), conteneurBtnSelect)
         templateRecherches.btnSelectMotsCles('Appareils', util.recupListeAppareils(recettes), conteneurBtnSelect)
         templateRecherches.btnSelectMotsCles('Ustensiles', util.recupListeUstensiles(recettes), conteneurBtnSelect)
 
@@ -304,9 +324,6 @@ const sectionRecherche = () => {
     corpsContenuPage.appendChild(conteneurSection)
 }
 
-sectionRecherche()
-
-
 const sectionResultatsRecherche = (recettes) => {
     const conteneurFicheRecettes = redacDry.nouvelElementDom('section', 'resultats-recherche')
     const resultatsFichesVisibles = recettes.forEach(recette => ficheRecette(recette, conteneurFicheRecettes))
@@ -314,58 +331,63 @@ const sectionResultatsRecherche = (recettes) => {
 
     return conteneurFicheRecettes
 }
+
+const actualiserResultatsRecherche = (resultatsFichesVisibles) => {
+    const conteneurFicheRecettes = document.querySelector('.resultats-recherche')
+    conteneurFicheRecettes.innerHTML = ''
+    const fichesVisibles = resultatsFichesVisibles.forEach(recette => ficheRecette(recette, conteneurFicheRecettes))
+    // TODO : actualiser les menus select
+}
+
+sectionRecherche()
 sectionResultatsRecherche(recettes)
-
-
-
-
-
 
 //////////////////
 // essai algo 1 //
 //////////////////
 
 // INITIALISATION ET STRUCTURE DES DONNEES
-// dupliquer le tableau des recettes
+// TODO : dictionnaire avec duplication du tableau des recettes
 const ensembleFiches = [...recettes]
 
-// récupérer l'ensemble des fiches affichées dans le DOM
+// TODO : récupérer l'ensemble des fiches affichées dans le DOM
 let resultatsFichesVisibles = ensembleFiches
-// console.log(resultatsFichesVisibles)
-
-// CONSTRUCTION DU MENU
-
-util.recupListeIngredients(resultatsFichesVisibles)
-util.recupListeAppareils(resultatsFichesVisibles)
-util.recupListeUstensiles(resultatsFichesVisibles)
-
 
 // BARRE DE RECHERCHE
-
-// écoute de la saisie dans le champs de recherche (onChange) dès 3 caract
-
-
 function rechercheParSaisieLibre (resultatsFichesVisibles, valeurSaisie) {
     const longueurMin = 3
     const champSaisie = document.querySelector('.recherche__saisie')
-
-    // réunir name, description et ingredients
+    // let fichesCorrespondantes = []
     
     champSaisie.addEventListener('input', e => {
         const saisie = e.target.value.toLowerCase()
+        // pour chaque fiche récupérer le contenu de titre / ingredient / recette et transformer en string
         const contenusRecettes = util.recupContenuPrincipalRecette(resultatsFichesVisibles)
 
         if (saisie.length > longueurMin - 1) {
             console.log(saisie)
+            let fichesCorrespondantes = []
+            let resultatsFichesNonRetenues = []
+            // let actualisationResultatsFichesVisibles = []
+
+            // TODO : tri fusion
             contenusRecettes.forEach(recettes => {
                 recettes.map(recette => {
-                    if (recette.toString().includes(saisie)) {
-                        console.log(recettes[0])
-                    }
+                    if (recette.toString().includes(saisie)) { 
+                        // récupérer l'id de la fiche retenue
+                        fichesCorrespondantes.push(recettes[0])
+                        // TODO : actualiser le tableau des fiches à afficher
+                        // récupérer les fiches complètes par l'id et actualiser l'affichage
+                        actualiserResultatsRecherche(util.rechercheRecetteParId(fichesCorrespondantes)) 
+                    } 
+                    // TODO(?) : mettre les fiches non retenues dans un tableau à part
+                    // else {
+                    //     resultatsFichesNonRetenues.push(recettes[0])
+                    //     util.rechercheRecetteParId(resultatsFichesVisibles, resultatsFichesNonRetenues)
+                    // }
                 })
             })
-    }
-}
+    }}
     )}
 
 rechercheParSaisieLibre(resultatsFichesVisibles)

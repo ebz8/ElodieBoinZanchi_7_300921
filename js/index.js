@@ -363,11 +363,13 @@ const actualiserResultatsRecherche = (resultatsFichesVisibles) => {
 
 const messageResultatsVides = () => {
     const conteneurFicheRecettes = document.querySelector('.resultats-recherche')
-    conteneurFicheRecettes.innerHTML = `<p>Aucune recette ne correspond à votre critère... Vous pouvez chercher " tarte aux pommes ", "poisson", etc.</p>`
-    
+    const messageAucuneRecette = `<p class="msg-resultats">Aucune recette ne correspond à votre critère... Vous pouvez rechercher « tarte aux pommes », « poisson », etc.</p>`
+    conteneurFicheRecettes.innerHTML = messageAucuneRecette
+    // const messageAucuneRecette = redacDry.nouvelElementDom('p', 'msg-resultats')
+    // messageAucuneRecette.textContent = 'Aucune recette ne correspond à votre critère... Vous pouvez chercher " tarte aux pommes ", "poisson", etc.'
+    // conteneurFicheRecettes.innerHTML = `<p>Aucune recette ne correspond à votre critère... Vous pouvez chercher " tarte aux pommes ", "poisson", etc.</p>`
+    // Réinitialisation des menus
     templateRecherches.actualisationListeBtnSelectMotsCles(recettes)
-
-    // TODO : afficher message d'erreur si conteneur vide
 }
 
 sectionRecherche()
@@ -397,10 +399,11 @@ function rechercheParSaisieLibre (resultatsFichesVisibles, valeurSaisie) {
 
         if (saisie.length > longueurMin - 1) {
             console.log(saisie)
+
             let fichesCorrespondantes = []
             let resultatsFichesNonRetenues = []
 
-            // TODO : tri fusion
+            // TODO : mettre en place tri fusion
             contenusRecettes.forEach(recettes => {
                 recettes.map(recette => {
                     if (recette.toString().includes(saisie)) { 

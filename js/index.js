@@ -146,8 +146,8 @@ const templateRecherches = {
     },
 
     listeBtnSelectMotsCles: (menuListe, btnSelectListe, elementBEM) => {
-        // btnSelectListe.innerHTML = ''
-        // console.log(btnSelecListe)
+        console.log(menuListe)
+        btnSelectListe.innerHTML = ''
 
         menuListe.forEach(motCle => {
             const itemListe = redacDry.nouvelElementDom('li', elementBEM + '__item')
@@ -156,30 +156,50 @@ const templateRecherches = {
         })
     },
 
-    // actualisationListeBtnSelectMotsCles: (tableauMenuListe) => {
-    //     let menuListe = ''
-    //     const btnSelectApercu = document.querySelectorAll('.btn-select__apercu')
+    actualisationListeBtnSelectMotsCles: (tableauMenuListe) => {
+        let menuListe = ''
+        const btnSelectApercu = document.querySelectorAll('.btn-select__apercu')
+        const btnSelectListe = document.querySelectorAll('.btn-select__liste')
+        
+        btnSelectApercu.forEach(btn => {
+            if (btn.textContent.includes('Ingrédients')) {
+                const btnSelectIng = btnSelectListe[0]
+                menuListe = util.recupListeIngredients(tableauMenuListe)
+                console.log('liste ingrédients')
+                templateRecherches.listeBtnSelectMotsCles(menuListe, btnSelectIng, 'btn-select')
+            } if (btn.textContent.includes('Appareils')) {
+                const btnSelectApp = btnSelectListe[1]
+                menuListe = util.recupListeAppareils(tableauMenuListe)
+                console.log('liste appareils')
+                templateRecherches.listeBtnSelectMotsCles(menuListe, btnSelectApp, 'btn-select')
+            } if (btn.textContent.includes('Ustensiles')) {
+                const btnSelectUst = btnSelectListe[2]
+                menuListe = util.recupListeUstensiles(tableauMenuListe)
+                console.log('liste ustensiles')
+                templateRecherches.listeBtnSelectMotsCles(menuListe, btnSelectUst, 'btn-select')
+            }
 
-    //     btnSelectApercu.forEach(btn => {
-    //         switch (btn.textContent) {
-    //                     case 'Ingrédients':
-    //                         menuListe = util.recupListeIngredients(tableauMenuListe)
-    //                         templateRecherches.listeBtnSelectMotsCles(menuListe, btn, 'btn-select')
-    //                         console.log(menuListe)
-    //                         break
-    //                         case 'Appareils':
-    //                         menuListe = util.recupListeAppareils(tableauMenuListe)
-    //                         console.log(menuListe)
-    //                         templateRecherches.listeBtnSelectMotsCles(menuListe, btn, 'btn-select')
-    //                         break
-    //                         case 'Ustensiles':
-    //                         menuListe = util.recupListeUstensiles(tableauMenuListe)
-    //                         console.log(menuListe)
-    //                         templateRecherches.listeBtnSelectMotsCles(menuListe, btn, 'btn-select')
-    //                         break
-    //                 }
-    //     })
-    // },
+            
+            // switch (btn.textContent) {
+            //             case 'Ingrédients':
+            //                 menuListe = util.recupListeIngredients(tableauMenuListe)
+            //                 templateRecherches.listeBtnSelectMotsCles(menuListe, btn, 'btn-select')
+            //                 console.log(btn.textContent)
+            //                 console.log(menuListe)
+            //                 break
+            //                 case 'Appareils':
+            //                 menuListe = util.recupListeAppareils(tableauMenuListe)
+            //                 console.log(menuListe)
+            //                 templateRecherches.listeBtnSelectMotsCles(menuListe, btn, 'btn-select')
+            //                 break
+            //                 case 'Ustensiles':
+            //                 menuListe = util.recupListeUstensiles(tableauMenuListe)
+            //                 console.log(menuListe)
+            //                 templateRecherches.listeBtnSelectMotsCles(menuListe, btn, 'btn-select')
+            //                 break
+            //         }
+        })
+    },
 
     btnSelectMotsCles: (menuNom, menuListe, conteneur) => {
         const elementBEM = 'btn-select'
@@ -192,7 +212,7 @@ const templateRecherches = {
         btnSelectApercu.append(btnIcone)
         conteneurbtnSelect.append(btnSelectApercu)
 
-        // génération contenu pour bouton déployé mais dissumulé
+        // génération contenu pour bouton déployé mais dissumulé :
         const btnSelectInput = redacDry.nouvelElementDom('input', elementBEM + '__saisie inactif')
         // TODO : conteneurbtnSelect.append(btnIcone)
         const btnSelectListe = redacDry.nouvelElementDom('ul', elementBEM + `__liste inactif`)
@@ -335,7 +355,19 @@ const actualiserResultatsRecherche = (resultatsFichesVisibles) => {
     const conteneurFicheRecettes = document.querySelector('.resultats-recherche')
     conteneurFicheRecettes.innerHTML = ''
     const fichesVisibles = resultatsFichesVisibles.forEach(recette => ficheRecette(recette, conteneurFicheRecettes))
-    // TODO : actualiser les menus select
+    // TODO : actualiser les menus select 
+    templateRecherches.actualisationListeBtnSelectMotsCles(resultatsFichesVisibles)
+
+    // TODO : afficher message d'erreur si conteneur vide
+}
+
+const messageResultatsVides = () => {
+    const conteneurFicheRecettes = document.querySelector('.resultats-recherche')
+    conteneurFicheRecettes.innerHTML = `<p>Aucune recette ne correspond à votre critère... Vous pouvez chercher " tarte aux pommes ", "poisson", etc.</p>`
+    
+    templateRecherches.actualisationListeBtnSelectMotsCles(recettes)
+
+    // TODO : afficher message d'erreur si conteneur vide
 }
 
 sectionRecherche()
@@ -367,7 +399,6 @@ function rechercheParSaisieLibre (resultatsFichesVisibles, valeurSaisie) {
             console.log(saisie)
             let fichesCorrespondantes = []
             let resultatsFichesNonRetenues = []
-            // let actualisationResultatsFichesVisibles = []
 
             // TODO : tri fusion
             contenusRecettes.forEach(recettes => {
@@ -377,15 +408,14 @@ function rechercheParSaisieLibre (resultatsFichesVisibles, valeurSaisie) {
                         fichesCorrespondantes.push(recettes[0])
                         // TODO : actualiser le tableau des fiches à afficher
                         // récupérer les fiches complètes par l'id et actualiser l'affichage
-                        actualiserResultatsRecherche(util.rechercheRecetteParId(fichesCorrespondantes)) 
-                    } 
-                    // TODO(?) : mettre les fiches non retenues dans un tableau à part
-                    // else {
-                    //     resultatsFichesNonRetenues.push(recettes[0])
-                    //     util.rechercheRecetteParId(resultatsFichesVisibles, resultatsFichesNonRetenues)
-                    // }
+                        actualiserResultatsRecherche(util.rechercheRecetteParId(fichesCorrespondantes))
+                    }
                 })
             })
+            // Si aucun résultat correspondant, afficher message adéquat
+            if (fichesCorrespondantes.length === 0) {
+                messageResultatsVides()
+            }
     }}
     )}
 

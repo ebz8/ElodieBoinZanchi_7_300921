@@ -14,6 +14,7 @@ page : index
     // barre de recherche
     .recherche__barre {
         display: flex;
+        position: relative;
         justify-content: space-between;
         width: 100%;
         height: 4rem;
@@ -33,8 +34,10 @@ page : index
     }
 
     .recherche__etiquettes {
+        position: relative;
+        top: 1.5rem;
         width: 100%;
-        margin: 1rem 0;
+        // height: 2.5rem;
 
         .etiquettes__liste {
             display: flex;
@@ -47,82 +50,124 @@ page : index
             width: max-content;
             padding: .5rem 1rem;
             font-size: .8rem;
-            background-color: $couleur-trio-A;
+
+            &.ing {
+                background-color: $couleur-trio-A;
+            }
+
+            &.app {
+                background-color: $couleur-trio-B;
+            }
+
+            &.ust {
+                background-color: $couleur-trio-C;
+            }
 
             i {
+                cursor: pointer;
                 font-size: 1.3rem;
             }
         }
     }
 
     .recherche__mots-cles {
+        position: absolute;
+        top: 18.5rem;
         display: flex;
+        align-items: start;
         gap: 1rem;
         
+        // details
         .btn-principal {      
+            position: relative;
+            z-index: 10;
+            justify-content: space-between;
             width: 10rem;
             padding: 1.5rem 1rem;
-            justify-content: space-between;
+            cursor: pointer;
+            max-height: 4rem;
 
-            &[open] {
-                min-width: 35rem;
-            }
+            ::placeholder {
+                color: #fff;
+                opacity: 0.5;
+              }
 
+              
             &:nth-child(1) {
                 background-color: $couleur-trio-A;
             }
-    
+                
             &:nth-child(2) {
                 background-color: $couleur-trio-B;
             }
-    
+                
             &:nth-child(3) {
                 background-color: $couleur-trio-C;
             }
+                
+
+            // bouton sélect déployé
+            &[open] {
+                position: relative;
+                z-index: 5;
+                min-width: 35rem;
+                max-height: inherit;
+
+                .btn-select__apercu {
+                    display: none;
+                }
+            }
         }
 
+        // summary
         .btn-select__apercu {
             display: flex;
             width: 100%;
             justify-content: space-between;
-
-            &.inactif {
-                display: none;
-            }
         }
 
+        // div
+        .btn-select__conteneur-saisie {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+
+            // input
+            .btn-select__saisie {
+                width: 90%;
+                height: 2rem;
+                opacity: 0.9;
+                color: white;
+                background-color: transparent;
+                border: none;
+            }
+
+        }
+
+        // ul
         .btn-select__liste {
             display: flex;
             justify-content: space-between;
             flex-flow: row wrap;
             max-height: 25rem;
             gap: .5rem;
+            overflow-y: scroll;
 
             .btn-select__item {
                 width: 30%;
-                // text-transform: capitalize;
-            }
-
-            &.inactif {
-                display: none;
             }
         }
 
-        .btn-select__saisie {
-            width: 100%;
-            background-color: transparent;
-            border: none;
 
-            &.inactif {
-                display: none;
-            }
-        }
     }
 }
 
 // SECTION RESULTATS
 
 .resultats-recherche {
+    position: relative;
+    top: 7.5rem;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
     gap: 2rem;

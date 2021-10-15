@@ -117,17 +117,26 @@ const templateRecherches = {
     },
 
     // TODO: gérer la couleur des étiquettes
-    etiquette: (conteneur, ingredientNom) => {
-        const etiquette = redacDry.nouvelElementDom('li', 'btn-principal')
-        const nomMotCle = redacDry.nouvelElementDom('p', null)
-        nomMotCle.textContent = ingredientNom
+    etiquette: (motCleCible, menuNom) => {
+        const conteneur = document.querySelector('.etiquettes__liste')
 
-        const btnFermeture = redacDry.nouvelElementDom('button', null)
+        // étiquette avec couleur héritée du menu
+        const etiquette = redacDry.nouvelElementDom('li', 'btn-principal')
+        etiquette.classList.add(menuNom.substr(0,3).toLowerCase())
+        const nomMotCle = redacDry.nouvelElementDom('p', '')
+        nomMotCle.textContent = motCleCible
+
+        const btnFermeture = redacDry.nouvelElementDom('button', '')
         const btnIcone = redacDry.nouvelElementDom('i', 'far fa-times-circle')
         btnFermeture.append(btnIcone)
 
         etiquette.append(nomMotCle, btnFermeture)
         conteneur.appendChild(etiquette)
+
+        // fermeture au clic sur le btn de fermeture
+        btnFermeture.addEventListener('click', (e) => {
+            etiquette.remove()
+        })
 
         return etiquette
     },
@@ -136,16 +145,14 @@ const templateRecherches = {
         const conteneurBEM = 'etiquettes'
         const conteneurEtiquettes = redacDry.nouvelElementDom('div', elementBEM + `__${conteneurBEM}`)
         const listeEtiquettes = redacDry.nouvelElementDom('ul', conteneurBEM + '__liste')
+        
         conteneurEtiquettes.append(listeEtiquettes)
-
-        // TODO: créer un li pour chaque étiquette
-        templateRecherches.etiquette(listeEtiquettes, 'Coco')
         conteneur.appendChild(conteneurEtiquettes)
 
         return conteneurEtiquettes
     },
 
-    listeBtnSelectMotsCles: (menuListe, btnSelectListe, elementBEM) => {
+    listeBtnSelectMotsCles: (menuListe, btnSelectListe, elementBEM, menuNom) => {
         console.log(menuListe)
         btnSelectListe.innerHTML = ''
 
@@ -153,6 +160,13 @@ const templateRecherches = {
             const itemListe = redacDry.nouvelElementDom('li', elementBEM + '__item')
             itemListe.textContent = util.capitalize(motCle)
             btnSelectListe.appendChild(itemListe)
+
+            // gestion des étiquettes
+        itemListe.addEventListener('click', (e) => {
+            const motCleCible = e.target.textContent
+            console.log(motCleCible)
+            templateRecherches.etiquette(motCleCible, menuNom)
+        })
         })
     },
 
@@ -178,69 +192,82 @@ const templateRecherches = {
                 console.log('liste ustensiles')
                 templateRecherches.listeBtnSelectMotsCles(menuListe, btnSelectUst, 'btn-select')
             }
-
-            
-            // switch (btn.textContent) {
-            //             case 'Ingrédients':
-            //                 menuListe = util.recupListeIngredients(tableauMenuListe)
-            //                 templateRecherches.listeBtnSelectMotsCles(menuListe, btn, 'btn-select')
-            //                 console.log(btn.textContent)
-            //                 console.log(menuListe)
-            //                 break
-            //                 case 'Appareils':
-            //                 menuListe = util.recupListeAppareils(tableauMenuListe)
-            //                 console.log(menuListe)
-            //                 templateRecherches.listeBtnSelectMotsCles(menuListe, btn, 'btn-select')
-            //                 break
-            //                 case 'Ustensiles':
-            //                 menuListe = util.recupListeUstensiles(tableauMenuListe)
-            //                 console.log(menuListe)
-            //                 templateRecherches.listeBtnSelectMotsCles(menuListe, btn, 'btn-select')
-            //                 break
-            //         }
         })
     },
 
-    btnSelectMotsCles: (menuNom, menuListe, conteneur) => {
+    
+    // selectionMotCle: (conteneurEtiquettes, e, menuNom) => {
+    //     const motCle = e.target.textContent
+    //     templateRecherches.etiquette(conteneurEtiquettes, motCle, menuNom)
+
+    //     // conteneurListe.addEventListener('click', (e) => {
+    //     //     const motCle = e.target.textContent
+    //     //     templateRecherches.etiquette(conteneurEtiquettes, motCle, menuNom)
+    //     // // TODO : régler le pb des boutons qui se créent deux/trois/quatre fois            
+    //     // })
+    //     },
+        
+    affichageBtnSelect: (conteneur, menuNom) => {
+        conteneur.setAttribute('open', '')
+    },
+
+    fermetureBtnSelect: (conteneur) => {
+        conteneur.removeAttribute('open', '')
+    },
+
+    btnSelectGestionEtats: (conteneur, input, menuNom) => {
+        // déploiement du menu select
+        conteneur.addEventListener('click', (e) => {
+            templateRecherches.affichageBtnSelect(conteneur, menuNom)
+        }) 
+
+        // fermeture du menu au clic à l'extérieur du bouton
+        document.addEventListener('click', (e) => {
+            const elementClic = e.target
+            if (conteneur !== elementClic &&
+                input !== elementClic) {
+                templateRecherches.fermetureBtnSelect(conteneur)
+            }
+        })
+    },
+
+    btnSelectMotsCles: (menuNom, menuListe, conteneur, bloc) => {
         const elementBEM = 'btn-select'
         const conteneurbtnSelect = redacDry.nouvelElementDom('details', 'btn-principal')
 
         const btnSelectApercu = redacDry.nouvelElementDom('summary', elementBEM + '__apercu')
         btnSelectApercu.textContent = menuNom
-        const btnIcone = redacDry.nouvelElementDom('i', 'fas fa-chevron-down')
+        const btnIconeA = redacDry.nouvelElementDom('i', 'fas fa-chevron-down')
+        btnSelectApercu.append(btnIconeA)
 
-        btnSelectApercu.append(btnIcone)
-        conteneurbtnSelect.append(btnSelectApercu)
+        // éléments du bouton déployé
+        const conteneurInput = redacDry.nouvelElementDom('div', elementBEM + '__conteneur-saisie')
+        const btnSelectInput = redacDry.nouvelElementDom('input', elementBEM + '__saisie')
+        const btnIconeB = redacDry.nouvelElementDom('i', 'fas fa-chevron-up')
+        btnSelectInput.setAttribute('placeholder', `Rechercher des ${menuNom.toLowerCase()}`)
+        conteneurInput.append(btnSelectInput, btnIconeB)
 
-        // génération contenu pour bouton déployé mais dissumulé :
-        const btnSelectInput = redacDry.nouvelElementDom('input', elementBEM + '__saisie inactif')
-        // TODO : conteneurbtnSelect.append(btnIcone)
-        const btnSelectListe = redacDry.nouvelElementDom('ul', elementBEM + `__liste inactif`)
-
-        // génération des items de la liste (liste de mots clés)
-        templateRecherches.listeBtnSelectMotsCles(menuListe, btnSelectListe, elementBEM)
-
-        // TODO : gestion des états du menu déployé (à écrire à part)
-        conteneurbtnSelect.addEventListener('click', () => {
-            conteneurbtnSelect.setAttribute('open', '')
-            conteneurbtnSelect.classList.remove('inactif')
-            btnSelectApercu.classList.add('inactif')
-            btnSelectInput.classList.remove('inactif')
-            btnSelectListe.classList.remove('inactif')  
-        })      
-        
-        conteneurbtnSelect.append(btnSelectInput, btnSelectListe)
+        // création de la liste des mots-clés
+        const btnSelectListe = redacDry.nouvelElementDom('ul', elementBEM + `__liste`)
+        templateRecherches.listeBtnSelectMotsCles(menuListe, btnSelectListe, elementBEM, menuNom)
+        conteneurbtnSelect.append(btnSelectApercu, conteneurInput, btnSelectListe)
         conteneur.appendChild(conteneurbtnSelect)
+
+        // gestion des états du bouton
+        templateRecherches.btnSelectGestionEtats(conteneurbtnSelect, btnSelectInput, menuNom)
 
         return conteneurbtnSelect
     },
 
     selectMotsCles: (elementBEM, conteneur) => {
+        // création du bloc étiquette
+        templateRecherches.etiquettes(elementBEM, conteneur)
+        
+        // menus select
         const conteneurBtnSelect = redacDry.nouvelElementDom('div', elementBEM + '__mots-cles')
-
-        templateRecherches.btnSelectMotsCles('Ingrédients',util.recupListeIngredients(recettes), conteneurBtnSelect)
-        templateRecherches.btnSelectMotsCles('Appareils', util.recupListeAppareils(recettes), conteneurBtnSelect)
-        templateRecherches.btnSelectMotsCles('Ustensiles', util.recupListeUstensiles(recettes), conteneurBtnSelect)
+        templateRecherches.btnSelectMotsCles('Ingrédients',util.recupListeIngredients(recettes), conteneurBtnSelect, conteneur)
+        templateRecherches.btnSelectMotsCles('Appareils', util.recupListeAppareils(recettes), conteneurBtnSelect, conteneur)
+        templateRecherches.btnSelectMotsCles('Ustensiles', util.recupListeUstensiles(recettes), conteneurBtnSelect, conteneur)
 
         conteneur.appendChild(conteneurBtnSelect)
         return conteneurBtnSelect
@@ -337,7 +364,7 @@ const sectionRecherche = () => {
     const conteneurSection = redacDry.nouvelElementDom('section', `${elementBEM}`)
 
     templateRecherches.barreDeRecherche(elementBEM, conteneurSection)
-    templateRecherches.etiquettes(elementBEM, conteneurSection)
+    // templateRecherches.etiquettes(elementBEM, conteneurSection)
     templateRecherches.selectMotsCles(elementBEM, conteneurSection)
 
     corpsContenuPage.appendChild(conteneurSection)
@@ -357,7 +384,6 @@ const actualiserResultatsRecherche = (resultatsFichesVisibles) => {
     const fichesVisibles = resultatsFichesVisibles.forEach(recette => ficheRecette(recette, conteneurFicheRecettes))
     // TODO : actualiser les menus select 
     templateRecherches.actualisationListeBtnSelectMotsCles(resultatsFichesVisibles)
-
     // TODO : afficher message d'erreur si conteneur vide
 }
 
@@ -387,29 +413,33 @@ const ensembleFiches = [...recettes]
 let resultatsFichesVisibles = ensembleFiches
 
 // BARRE DE RECHERCHE
-function rechercheParSaisieLibre (resultatsFichesVisibles, valeurSaisie) {
+function rechercheParSaisieLibre (resultatsFichesVisibles) {
     const longueurMin = 3
     const champSaisie = document.querySelector('.recherche__saisie')
-    // let fichesCorrespondantes = []
     
     champSaisie.addEventListener('input', e => {
         const saisie = e.target.value.toLowerCase()
         // pour chaque fiche récupérer le contenu de titre / ingredient / recette et transformer en string
         const contenusRecettes = util.recupContenuPrincipalRecette(resultatsFichesVisibles)
 
+        // réinitialisation de l'affichage si champ vidé
+        // TODO : améliorer avec motsclés
+        if (saisie.length === 0) {
+            actualiserResultatsRecherche(resultatsFichesVisibles)
+        }
+
         if (saisie.length > longueurMin - 1) {
             console.log(saisie)
 
             let fichesCorrespondantes = []
-            let resultatsFichesNonRetenues = []
+            // let resultatsFichesNonRetenues = []
 
-            // TODO : mettre en place tri fusion
             contenusRecettes.forEach(recettes => {
+                // TODO : mettre en place tri fusion
                 recettes.map(recette => {
                     if (recette.toString().includes(saisie)) { 
-                        // récupérer l'id de la fiche retenue
+                        // récupère l'id de la fiche retenue
                         fichesCorrespondantes.push(recettes[0])
-                        // TODO : actualiser le tableau des fiches à afficher
                         // récupérer les fiches complètes par l'id et actualiser l'affichage
                         actualiserResultatsRecherche(util.rechercheRecetteParId(fichesCorrespondantes))
                     }

@@ -37,7 +37,7 @@ page : index
         position: relative;
         top: 1.5rem;
         width: 100%;
-        // height: 2.5rem;
+        height: 3rem;
 
         .etiquettes__liste {
             display: flex;
@@ -151,11 +151,12 @@ page : index
             justify-content: space-between;
             flex-flow: row wrap;
             max-height: 25rem;
-            gap: .5rem;
+            // gap: .5rem;
             overflow-y: scroll;
 
             .btn-select__item {
                 width: 30%;
+                padding-bottom: .5rem;
             }
         }
 
@@ -166,8 +167,7 @@ page : index
 // SECTION RESULTATS
 
 .resultats-recherche {
-    position: relative;
-    top: 7.5rem;
+    margin-top: 9rem;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
     gap: 2rem;

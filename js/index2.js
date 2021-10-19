@@ -69,6 +69,30 @@ const util = {
         return tableauContenuxPrincipaux
     },
 
+    recupChampsMotsCleRecette: (recettes) => {
+        // console.log(recettes)
+        // const fichesRecette = Array.from(recettes)
+        const tableauContenusMotsCles = []
+
+        recettes.forEach((recette) => {
+            const contenuMotsClesRecette = []
+
+            contenuMotsClesRecette.push(recette.id)
+
+            contenuMotsClesRecette.push(recette.appliance.toLowerCase())
+
+            recette.ustensils.map((ustensile) => {
+                contenuMotsClesRecette.push(ustensile.toLowerCase())
+            })
+            
+            recette.ingredients.map((ingredients) => {
+                contenuMotsClesRecette.push(ingredients.ingredient.toLowerCase())
+            })
+            tableauContenusMotsCles.push(contenuMotsClesRecette)
+        })
+        return tableauContenusMotsCles
+    },
+
     // (casse) majuscule pour la première lettre d'une chaîne de caractères
     capitalize: (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
@@ -137,7 +161,7 @@ const templateRecherches = {
     },
 
     listeBtnSelectMotsCles: (menuListe, btnSelectListe, elementBEM, menuNom, fichesActives) => {
-        // console.log(menuListe)
+        // console.log(fichesActives)
         btnSelectListe.innerHTML = ''
 
         menuListe.forEach(motCle => {
@@ -260,11 +284,11 @@ const templateRecherches = {
         btnFermeture.addEventListener('click', (e) => {
             etiquette.remove()
             // TODO: actualisation de la recherche
-            rechercheParMotCle(motCleCible, nomMenuRaccourci, fichesActives)
+            rechercheParMotCle(fichesActives)
         })
 
         // TODO: actualiser les fiches visibles à chaque nouvelle étiquette
-        rechercheParMotCle(motCleCible, nomMenuRaccourci, fichesActives)
+        rechercheParMotCle(fichesActives)
 
         return etiquette
     },
@@ -459,19 +483,18 @@ function rechercheParSaisieLibre (ensembleFiches) {
         // pour chaque fiche récupérer le contenu de titre / ingredient / recette et transformer en string
         const contenusRecettes = util.recupContenuPrincipalRecette(ensembleFiches)
 
-        // // TODO : réinitialisation de l'affichage si champ vidé
+        // TODO : réinitialisation de l'affichage si champ vidé
         if (saisie.length === 0) {
             actualiserResultatsRecherche(ensembleFiches)
         }
 
         if (saisie.length > longueurMin - 1) {
             console.log(`mot saisi : ${saisie}`)
-
             let fichesCorrespondantes = []
             // let resultatsFichesNonRetenues = []
 
             contenusRecettes.forEach(recettes => {
-                // TODO : mettre en place tri fusion
+            // TODO ? : mettre en place tri fusion
                 recettes.map(recette => {
                     if (recette.toString().includes(saisie)) { 
                         // récupère l'id de la fiche retenue
@@ -479,45 +502,48 @@ function rechercheParSaisieLibre (ensembleFiches) {
                     }
                 })
             })
-            // // // Si aucun résultat correspondant, afficher message adéquat
-            // if (fichesCorrespondantes.length === 0) {
-            //     messageResultatsVides()
-            // }
+
+            // TODO : gérer cas avec recherche étiquette avant saisie ?
             let resultatsRechercheSaisie = util.rechercheRecetteParId(fichesCorrespondantes)
-            
-
-            // si une étiquette a été sélectionnée :
-            // récupérer les contenus de resultatsFichesVisibles (ustensiles, ingrédients, appareils)
-            // chercher dedans et ceux qui renvoient true sont mis en paramètres de l'actualisation 
-
             actualiserResultatsRecherche(resultatsRechercheSaisie)
+
             return resultatsRechercheSaisie
-            // console.log(resultatsRechercheSaisie)
         }
     })}
 
 
 // RECHERCHE PAR MOT-CLE
-function rechercheParMotCle (motCle, categorieMotCle, fichesActives) {
-
+function rechercheParMotCle (fichesActives) {    
     const etiquettesActives = util.recupEtiquettesActives()
     console.log('rechercher')
     console.log(etiquettesActives)
-    // console.log(`'${motCle.toLowerCase()}' de type '${categorieMotCle}'`)
     let fichesRetenues = []
 
     // si fichesActives contient quelque chose ( = une actualisation des résultats a déjà eu lieu)
     // TODO : alors rechercher les termes contenus dans le tableau des étiquettes dans les fiches actives (seulement ingrédients, ustensiles et appareils)
     if (fichesActives !== undefined) {
+        // récupérer les champs ingrédients, appareils et ustensiles pour les fichesActives
+
         console.log('dans')
         console.log(fichesActives)
-        // fichesRetenues.push(resultats)
-        // etiquettesActives.forEach((etiquette) => {
-        //    const resultats = fichesActives.filter(fiche => fiche.includes(etiquette))
-        //     // console.log(fichesRetenues)
-        // })
+
+        const contenuFichesActives = util.recupChampsMotsCleRecette(fichesActives)
+        console.log(contenuFichesActives)
+
+        // etiquettesActives.forEach((etiquette => {
+        //     fichesActives.map((fiche) => {
+        //         if (contenuFichesActives.toString().includes(etiquette)) {
+        //             fichesRetenues.push(fiche[0])
+        //         }
+        //     })
+        // }))
+
+        let resultatsFichesMotsCles = util.rechercheRecetteParId(fichesRetenues)
+        actualiserResultatsRecherche(resultatsFichesMotsCles)
+
     // TODO : si les résultats n'ont pas connu d'acualisation, rechercher sur le json de base (ensembleFiches) les termes contenus dans étiquettes
     } else {
+        const contenuFichesActives = util.recupChampsMotsCleRecette(ensembleFiches)
         console.log('recherche dans toutes les fiches')
         // ensembleFiches.filter(fiche => {
         // })

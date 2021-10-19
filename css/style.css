@@ -45,8 +45,6 @@ html {
 html {
   line-height: 1.15;
   /* 1 */
-  -webkit-text-size-adjust: 100%;
-  /* 2 */
 }
 
 /*
@@ -383,6 +381,7 @@ page : index
   position: relative;
   top: 1.5rem;
   width: 100%;
+  height: 3rem;
 }
 .recherche .recherche__etiquettes .etiquettes__liste {
   display: flex;
@@ -470,16 +469,15 @@ page : index
   justify-content: space-between;
   flex-flow: row wrap;
   max-height: 25rem;
-  gap: 0.5rem;
   overflow-y: scroll;
 }
 .recherche .recherche__mots-cles .btn-select__liste .btn-select__item {
   width: 30%;
+  padding-bottom: 0.5rem;
 }
 
 .resultats-recherche {
-  position: relative;
-  top: 7.5rem;
+  margin-top: 9rem;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
   gap: 2rem;

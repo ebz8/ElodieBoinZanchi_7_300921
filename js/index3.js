@@ -115,10 +115,10 @@ const templateRecherches = {
         itemListe.addEventListener('click', (e) => {
             const motCleCible = e.target.textContent
             templateRecherches.etiquette(motCleCible, menuNom, fichesActives)
-            // TODO : actualiser résultats
             FonctionRecherche.lancementRecherche(ensembleFiches)
         })
         })
+        
     },
         
     affichageBtnSelect: (conteneur) => {
@@ -198,12 +198,25 @@ const templateRecherches = {
         const btnIconeB = redacDry.nouvelElementDom('i', 'fas fa-chevron-up')
         btnSelectInput.setAttribute('placeholder', `Rechercher des ${menuNom.toLowerCase()}`)
         conteneurInput.append(btnSelectInput, btnIconeB)
-
+        
         // création de la liste des mots-clés
         const btnSelectListe = redacDry.nouvelElementDom('ul', elementBEM + `__liste`)
         templateRecherches.listeBtnSelectMotsCles(menuListe, btnSelectListe, elementBEM, menuNom)
         conteneurbtnSelect.append(btnSelectApercu, conteneurInput, btnSelectListe)
         conteneur.appendChild(conteneurbtnSelect)
+
+        // configuration du champ de recherche à l'intérieur du btn select
+        btnSelectInput.addEventListener('input', (e) => {
+            const saisie = e.target.value.toLowerCase()
+            let menuListeSaisieLibre = []
+
+            menuListe.forEach((menuListeMot)=> {
+                if (menuListeMot.includes(saisie)) {
+                   menuListeSaisieLibre.push(menuListeMot)
+                }
+            })
+            templateRecherches.listeBtnSelectMotsCles(menuListeSaisieLibre, btnSelectListe, elementBEM, menuNom)
+        }) 
 
         // gestion des états du bouton
         templateRecherches.btnSelectGestionEtats(conteneurbtnSelect, btnSelectInput)
@@ -383,7 +396,6 @@ const FonctionRecherche = {
 
 
     triParSaisieLibre : (fichesActives, saisie) => {
-        // récupérer état actuel de fichesActives (soit déjà trié avec des mots-clés, soit fiches au complet)
         const contenusRecettes = FonctionRecherche.preTraitementRecettes(fichesActives)
         const longueurMin = 3
 
@@ -499,8 +511,6 @@ const FonctionRecherche = {
 
         console.log(`critères de recherche = ${saisie} & ${FonctionRecherche.recupEtiquettesActives()}`)
     }
-
-
 }
 
 /////////////////////////////

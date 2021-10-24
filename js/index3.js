@@ -458,7 +458,7 @@ const FonctionRecherche = {
 
                 // configuration de l'input du bouton
                 btnSelectInput[0].addEventListener('input', (e) => {
-                    const saisie = e.target.value.toLowerCase()
+                    const saisie = util.normalize(e.target.value)
                     let menuListeSaisieLibreIng = []
                     Array.from(menuListeIng).forEach((menuListeMot) => {
                         if (menuListeMot.includes(saisie)) {
@@ -485,7 +485,7 @@ const FonctionRecherche = {
 
                     // configuration de l'input du bouton
                 btnSelectInput[1].addEventListener('input', (e) => {
-                    const saisie = e.target.value.toLowerCase()
+                    const saisie = util.normalize(e.target.value)
                     let menuListeSaisieLibreApp = []
                     Array.from(menuListeApp).forEach((menuListeMot) => {
                         if (menuListeMot.includes(saisie)) {
@@ -512,7 +512,7 @@ const FonctionRecherche = {
 
                     // configuration de l'input du bouton
                 btnSelectInput[2].addEventListener('input', (e) => {
-                    const saisie = e.target.value.toLowerCase()
+                    const saisie = util.normalize(e.target.value)
                     let menuListeSaisieLibreUst = []
                     Array.from(menuListeUst).forEach((menuListeMot) => {
                         if (menuListeMot.includes(saisie)) {

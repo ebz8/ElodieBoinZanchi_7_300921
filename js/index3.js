@@ -115,6 +115,11 @@ const templateRecherches = {
                 const motCleCible = e.target.textContent
                 templateRecherches.etiquette(motCleCible, menuNom, fichesActives)
                 FonctionRecherche.lancementRecherche(ensembleFiches)
+
+                // vider les champs de recherche des boutons
+                const btnSelectInput = document.querySelectorAll('.btn-select__conteneur-saisie input')
+                btnSelectInput.forEach(btn => btn.value = '')
+                
             })
         })
         
@@ -202,19 +207,6 @@ const templateRecherches = {
         templateRecherches.listeBtnSelectMotsCles(menuListe, btnSelectListe, elementBEM, menuNom)
         conteneurbtnSelect.append(btnSelectApercu, conteneurInput, btnSelectListe)
         conteneur.appendChild(conteneurbtnSelect)
-
-        // // configuration du champ de recherche à l'intérieur du btn select
-        // btnSelectInput.addEventListener('input', (e) => {
-        //     const saisie = e.target.value.toLowerCase()
-        //     let menuListeSaisieLibre = []
-
-        //     menuListe.forEach((menuListeMot)=> {
-        //         if (menuListeMot.includes(saisie)) {
-        //            menuListeSaisieLibre.push(menuListeMot)
-        //         }
-        //     })
-        //     templateRecherches.listeBtnSelectMotsCles(menuListeSaisieLibre, btnSelectListe, elementBEM, menuNom)
-        // }) 
 
         // gestion des états du bouton
         templateRecherches.btnSelectGestionEtats(conteneurbtnSelect, btnSelectInput)

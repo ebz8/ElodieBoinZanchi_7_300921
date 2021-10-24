@@ -96,9 +96,9 @@ const templateRecherches = {
 
         // écoute du champs saisie
         saisieFormulaireRecherche.addEventListener('input', e => {
-            if (e.target.value.length > 2) {
+            // if (e.target.value.length > 2) {
                 FonctionRecherche.lancementRecherche(ensembleFiches)
-            }
+            // }
             
         })
 
@@ -451,51 +451,28 @@ const FonctionRecherche = {
 
     triParMotCle : (fichesActives) => {
         const etiquettes = FonctionRecherche.recupEtiquettesActives()
-        console.log(fichesActives)
 
         if (etiquettes.length > 0) {
             const contenusRecettes = FonctionRecherche.preTraitementRecettes(fichesActives)
             console.log('tri par mot clé : ')
             let fichesCorrespondantes = []
 
-            contenusRecettes.forEach(recettes => { recettes.map(recette => {
-                if (recette.toString().includes(etiquettes[0])) { 
+            contenusRecettes.forEach(recettes => { 
+                let tableauContientMots = (tableau, mots) => mots.every(mot => tableau.includes(mot))
+
+                if (tableauContientMots(recettes, etiquettes)) { 
+                    console.log(recettes[0])
                     // récupère l'id de la fiche retenue
                     fichesCorrespondantes.push(recettes[0])
                 }
-            })})
+            })
 
         let fichesRetenues = FonctionRecherche.rechercheRecetteParId(fichesCorrespondantes)
         
         return fichesRetenues
-        }
-        // const contenusRecettes = FonctionRecherche.preTraitementRecettes(fichesActives)
-        // const etiquettes = FonctionRecherche.recupEtiquettesActives()
-        // const recherche = etiquettes.every((etiquette) => {
-        //     contenusRecettes.some((recette) => recette.includes(etiquette))
-        // })
-        // let fichesRetenues = []
-        
-
-        // contenusRecettes.forEach((recette) => {
-        //    if (recette.includes(etiquettes)) {  
-        //        fichesRetenues.push(recette[0])
-        // }})
-
-        // etiquettes.every(etiquette => { 
-        //     if (contenusRecettes.includes(etiquette)) {
-        //         fichesRetenues.push()
-        //     }})
-
-        // console.log(fichesRetenues)
-        // etiquettes.forEach((etiquette) => {
-        //     // recherche si contenusRecette contient etiquette, si oui
-
-        // })
-    
-    return fichesActives
     }
-    ,
+    return fichesActives
+    },
 
     actualiserListesMotsCle : (fichesActives) => {
         console.log('actualisation liste btn')

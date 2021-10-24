@@ -461,7 +461,7 @@ const FonctionRecherche = {
                     const saisie = util.normalize(e.target.value)
                     let menuListeSaisieLibreIng = []
                     Array.from(menuListeIng).forEach((menuListeMot) => {
-                        if (menuListeMot.includes(saisie)) {
+                        if (util.normalize(menuListeMot).includes(saisie)) {
                             menuListeSaisieLibreIng.push(menuListeMot)
                         }
                     })
@@ -488,7 +488,7 @@ const FonctionRecherche = {
                     const saisie = util.normalize(e.target.value)
                     let menuListeSaisieLibreApp = []
                     Array.from(menuListeApp).forEach((menuListeMot) => {
-                        if (menuListeMot.includes(saisie)) {
+                        if (util.normalize(menuListeMot).includes(saisie)) {
                             menuListeSaisieLibreApp.push(menuListeMot)
                         }
                     })
@@ -515,7 +515,7 @@ const FonctionRecherche = {
                     const saisie = util.normalize(e.target.value)
                     let menuListeSaisieLibreUst = []
                     Array.from(menuListeUst).forEach((menuListeMot) => {
-                        if (menuListeMot.includes(saisie)) {
+                        if (util.normalize(menuListeMot).includes(saisie)) {
                             menuListeSaisieLibreUst.push(menuListeMot)
                         }
                     })

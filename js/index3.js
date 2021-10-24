@@ -94,10 +94,9 @@ const templateRecherches = {
         formulaireRecherche.append(saisieFormulaireRecherche, btnLoupe)
         conteneur.appendChild(formulaireRecherche)
 
-        // écoute du champs saisie
+        // RECHERCHE : écoute du champ de saisie
         saisieFormulaireRecherche.addEventListener('input', e => {
-                FonctionRecherche.lancementRecherche(ensembleFiches)
-            
+            FonctionRecherche.lancementRecherche(ensembleFiches) 
         })
 
         return formulaireRecherche
@@ -111,12 +110,12 @@ const templateRecherches = {
             itemListe.textContent = util.capitalize(motCle)
             btnSelectListe.appendChild(itemListe)
 
-            // gestion des étiquettes
-        itemListe.addEventListener('click', (e) => {
-            const motCleCible = e.target.textContent
-            templateRecherches.etiquette(motCleCible, menuNom, fichesActives)
-            FonctionRecherche.lancementRecherche(ensembleFiches)
-        })
+            // RECHERCHE : gestion des étiquettes
+            itemListe.addEventListener('click', (e) => {
+                const motCleCible = e.target.textContent
+                templateRecherches.etiquette(motCleCible, menuNom, fichesActives)
+                FonctionRecherche.lancementRecherche(ensembleFiches)
+            })
         })
         
     },
@@ -176,10 +175,9 @@ const templateRecherches = {
         // fermeture au clic sur le btn de fermeture
         btnFermeture.addEventListener('click', (e) => {
             etiquette.remove()
-            // TODO : actualiser résultats
+            // RECHERCHE : actualiser la recherche
             FonctionRecherche.lancementRecherche(ensembleFiches)
         })
-
         return etiquette
     },
 
@@ -205,18 +203,18 @@ const templateRecherches = {
         conteneurbtnSelect.append(btnSelectApercu, conteneurInput, btnSelectListe)
         conteneur.appendChild(conteneurbtnSelect)
 
-        // configuration du champ de recherche à l'intérieur du btn select
-        btnSelectInput.addEventListener('input', (e) => {
-            const saisie = e.target.value.toLowerCase()
-            let menuListeSaisieLibre = []
+        // // configuration du champ de recherche à l'intérieur du btn select
+        // btnSelectInput.addEventListener('input', (e) => {
+        //     const saisie = e.target.value.toLowerCase()
+        //     let menuListeSaisieLibre = []
 
-            menuListe.forEach((menuListeMot)=> {
-                if (menuListeMot.includes(saisie)) {
-                   menuListeSaisieLibre.push(menuListeMot)
-                }
-            })
-            templateRecherches.listeBtnSelectMotsCles(menuListeSaisieLibre, btnSelectListe, elementBEM, menuNom)
-        }) 
+        //     menuListe.forEach((menuListeMot)=> {
+        //         if (menuListeMot.includes(saisie)) {
+        //            menuListeSaisieLibre.push(menuListeMot)
+        //         }
+        //     })
+        //     templateRecherches.listeBtnSelectMotsCles(menuListeSaisieLibre, btnSelectListe, elementBEM, menuNom)
+        // }) 
 
         // gestion des états du bouton
         templateRecherches.btnSelectGestionEtats(conteneurbtnSelect, btnSelectInput)
@@ -438,39 +436,101 @@ const FonctionRecherche = {
     return fichesActives
     },
 
+    // triInputMotsCle : () => {
+
+    // },
+
     actualiserListesMotsCle : (fichesActives) => {
-        let menuListe = ''
         const btnSelectApercu = document.querySelectorAll('.btn-select__apercu')
         const btnSelectListe = document.querySelectorAll('.btn-select__liste')
+        const btnSelectInput = document.querySelectorAll('.btn-select__conteneur-saisie input')
+
+        const menuListeIng = util.recupListeIngredients(fichesActives)
+        const menuListeApp = util.recupListeAppareils(fichesActives)
+        const menuListeUst = util.recupListeUstensiles(fichesActives)
         
         btnSelectApercu.forEach(btn => {
             if (btn.textContent.includes('Ingrédients')) {
                 const btnSelectIng = btnSelectListe[0]
-                menuListe = util.recupListeIngredients(fichesActives)
+
                 templateRecherches.listeBtnSelectMotsCles(
-                    menuListe,
+                    menuListeIng,
                     btnSelectIng,
                     'btn-select',
                     btn.textContent,
                     fichesActives)
+
+                // configuration de l'input du bouton
+                btnSelectInput[0].addEventListener('input', (e) => {
+                    const saisie = e.target.value.toLowerCase()
+                    let menuListeSaisieLibreIng = []
+                    Array.from(menuListeIng).forEach((menuListeMot) => {
+                        if (menuListeMot.includes(saisie)) {
+                            menuListeSaisieLibreIng.push(menuListeMot)
+                        }
+                    })
+
+                    templateRecherches.listeBtnSelectMotsCles(
+                        menuListeSaisieLibreIng,
+                        btnSelectIng,
+                        'btn-select',
+                        btn.textContent,
+                        fichesActives)
+                })
+
             } if (btn.textContent.includes('Appareils')) {
                 const btnSelectApp = btnSelectListe[1]
-                menuListe = util.recupListeAppareils(fichesActives)
                 templateRecherches.listeBtnSelectMotsCles(
-                    menuListe,
+                    menuListeApp,
                     btnSelectApp,
                     'btn-select',
                     btn.textContent,
                     fichesActives)
+
+                    // configuration de l'input du bouton
+                btnSelectInput[1].addEventListener('input', (e) => {
+                    const saisie = e.target.value.toLowerCase()
+                    let menuListeSaisieLibreApp = []
+                    Array.from(menuListeApp).forEach((menuListeMot) => {
+                        if (menuListeMot.includes(saisie)) {
+                            menuListeSaisieLibreApp.push(menuListeMot)
+                        }
+                    })
+
+                    templateRecherches.listeBtnSelectMotsCles(
+                        menuListeSaisieLibreApp,
+                        btnSelectApp,
+                        'btn-select',
+                        btn.textContent,
+                        fichesActives)
+                })
+
             } if (btn.textContent.includes('Ustensiles')) {
                 const btnSelectUst = btnSelectListe[2]
-                menuListe = util.recupListeUstensiles(fichesActives)
                 templateRecherches.listeBtnSelectMotsCles(
-                    menuListe,
+                    menuListeUst,
                     btnSelectUst,
                     'btn-select',
                     btn.textContent,
                     fichesActives)
+
+                    // configuration de l'input du bouton
+                btnSelectInput[2].addEventListener('input', (e) => {
+                    const saisie = e.target.value.toLowerCase()
+                    let menuListeSaisieLibreUst = []
+                    Array.from(menuListeUst).forEach((menuListeMot) => {
+                        if (menuListeMot.includes(saisie)) {
+                            menuListeSaisieLibreUst.push(menuListeMot)
+                        }
+                    })
+
+                    templateRecherches.listeBtnSelectMotsCles(
+                        menuListeSaisieLibreUst,
+                        btnSelectUst,
+                        'btn-select',
+                        btn.textContent,
+                        fichesActives)
+                })
             }
         })
     },

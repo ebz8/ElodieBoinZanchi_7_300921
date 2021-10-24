@@ -49,9 +49,13 @@ const util = {
     },
 
     // (casse) majuscule pour la première lettre d'une chaîne de caractères
-    capitalize: (string) => {
-        return string.charAt(0).toUpperCase() + string.slice(1);
+    capitalize: (texte) => {
+        return texte.charAt(0).toUpperCase() + texte.slice(1);
     },
+
+    normalize: (texte) => {
+        return texte.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    }
 }
 
 const redacDry = {
@@ -360,14 +364,14 @@ const FonctionRecherche = {
             const contenuPrincipalRecette = []
 
             contenuPrincipalRecette.push(recette.id)
-            contenuPrincipalRecette.push(recette.name.toLowerCase())
-            contenuPrincipalRecette.push(recette.description.toLowerCase())
+            contenuPrincipalRecette.push(util.normalize(recette.name))
+            contenuPrincipalRecette.push(util.normalize(recette.description))
             recette.ingredients.map((ingredients) => {
-                contenuPrincipalRecette.push(ingredients.ingredient.toLowerCase())
+                contenuPrincipalRecette.push(util.normalize(ingredients.ingredient))
             })
-            contenuPrincipalRecette.push(recette.appliance.toLowerCase())
+            contenuPrincipalRecette.push(util.normalize(recette.appliance))
             recette.ustensils.map((ustensile) => {
-                contenuPrincipalRecette.push(ustensile.toLowerCase())
+                contenuPrincipalRecette.push(util.normalize(ustensile))
             })
             tableauContenuxPrincipaux.push(contenuPrincipalRecette)
         })
@@ -379,7 +383,7 @@ const FonctionRecherche = {
         const etiquettesActives = []
 
         tableauEtiquettes.forEach(etiquette => {
-            etiquettesActives.push(etiquette.textContent.toLowerCase())
+            etiquettesActives.push(util.normalize(etiquette.textContent))
         })
         return etiquettesActives
     },
@@ -552,7 +556,7 @@ const FonctionRecherche = {
 
         // recherche par saisie libre
         const champSaisie = document.querySelector('.recherche__saisie')
-        const saisie = champSaisie.value.toLowerCase()
+        const saisie = util.normalize(champSaisie.value)
 
         let etapeTri2 = []
         const triParSaisieLibre = FonctionRecherche.triParSaisieLibre(etapeTri1, saisie)

@@ -348,16 +348,16 @@ const sectionResultatsRecherche = (ensembleFiches) => {
 /////////////////////////////
 
 const FonctionRecherche = {
-    // pour chaque fiche, récupérer dans un tableau les champs suivants :
-    // [0] : id ; [1] : titre ; [2] : description ;
-    // [3] : ingrédietns ; [4] : appareils ; [5] : ustensiles.
-
-// matcher par id les fiches simplifiées retenues en résultats de recherche et fiches complètes du json
+    
+    // matcher par id les fiches simplifiées retenues en résultats de recherche et fiches complètes du json
     rechercheRecetteParId : (id) => {
         const recetteIdCorrespondante = ensembleFiches.filter((recette) => id.includes(recette.id))
         return recetteIdCorrespondante
     },
-
+    
+    // pour chaque fiche, récupérer dans un tableau les champs suivants :
+    // [0] : id ; [1] : titre ; [2] : description ;
+    // [3] : ingrédietns ; [4] : appareils ; [5] : ustensiles.
     preTraitementRecettes : (recettes) => {
         const tableauContenuxPrincipaux = []
         recettes.forEach((recette) => {
@@ -390,6 +390,8 @@ const FonctionRecherche = {
 
 
     triParSaisieLibre : (fichesActives, saisie) => {
+        // Traitement des données des fiches actives pour faciliter itération
+        // (chaque fiche devient un tableau qui est découpée en sous-tableaux)
         const contenusRecettes = FonctionRecherche.preTraitementRecettes(fichesActives)
         const longueurMin = 3
 
@@ -397,45 +399,47 @@ const FonctionRecherche = {
                 let fichesCorrespondantes = []
 
                 contenusRecettes.forEach(recettes => { recettes.map(recette => {
+                // transformation du contenu de chaque recette en string et vérifier si elle inclue la saisie 
                     if (recette.toString().includes(saisie)) { 
-                        // récupère l'id de la fiche retenue
+                        // récupère l'id de la fiche retenue et push dans tableau des fiches correspondant aux critères
                         fichesCorrespondantes.push(recettes[0])
                     }
                 })})
-
+                // crée un tableau avec les fiches en json récupérées via leur id stockée dans fichesCorrespondantes
                 let fichesRetenues = FonctionRecherche.rechercheRecetteParId(fichesCorrespondantes)
                 return fichesRetenues
             }
+        // si moins de 3 lettres, retourne le tableau fichesActives reçu en paramètres
         return fichesActives
     },
 
     triParMotCle : (fichesActives) => {
+        // récupération du tableau contenant les mots-clés sélectionnés
         const etiquettes = FonctionRecherche.recupEtiquettesActives()
-
+        // si des mots-clés sont sélectionnées, traiter les données des fiches actives pour faciliter itération
+        // (chaque fiche devient un tableau qui est découpée en sous-tableaux)
         if (etiquettes.length > 0) {
             const contenusRecettes = FonctionRecherche.preTraitementRecettes(fichesActives)
             let fichesCorrespondantes = []
 
-            contenusRecettes.forEach(recettes => { 
+            contenusRecettes.forEach(recettes => {
+                // pour chaque fiche (recettes), trier celles qui contiennent chacun des mots-clés sélectionnés (etiquettes)
                 let tableauContientMots = (tableau, mots) => mots.every(mot => tableau.includes(mot))
-
                 if (tableauContientMots(recettes, etiquettes)) { 
-                    // récupère l'id de la fiche retenue
+                    // récupère l'id de la fiche retenue et push dans tableau des fiches correspondant aux critères
                     fichesCorrespondantes.push(recettes[0])
                 }
             })
-
+        // crée un tableau avec les fiches en json récupérées via leur id stockée dans fichesCorrespondantes
         let fichesRetenues = FonctionRecherche.rechercheRecetteParId(fichesCorrespondantes)
         
         return fichesRetenues
     }
+    // si pas de mot-clé sélectionné, renvoie le tableau intact
     return fichesActives
     },
 
-    // triInputMotsCle : () => {
-
-    // },
-
+    // TODO : reprendre & raccourcir le code
     actualiserListesMotsCle : (fichesActives) => {
         const btnSelectApercu = document.querySelectorAll('.btn-select__apercu')
         const btnSelectListe = document.querySelectorAll('.btn-select__liste')
@@ -448,13 +452,7 @@ const FonctionRecherche = {
         btnSelectApercu.forEach(btn => {
             if (btn.textContent.includes('Ingrédients')) {
                 const btnSelectIng = btnSelectListe[0]
-
-                templateRecherches.listeBtnSelectMotsCles(
-                    menuListeIng,
-                    btnSelectIng,
-                    'btn-select',
-                    btn.textContent,
-                    fichesActives)
+                templateRecherches.listeBtnSelectMotsCles(menuListeIng, btnSelectIng, 'btn-select', btn.textContent, fichesActives)
 
                 // configuration de l'input du bouton
                 btnSelectInput[0].addEventListener('input', (e) => {
@@ -465,25 +463,14 @@ const FonctionRecherche = {
                             menuListeSaisieLibreIng.push(menuListeMot)
                         }
                     })
-
-                    templateRecherches.listeBtnSelectMotsCles(
-                        menuListeSaisieLibreIng,
-                        btnSelectIng,
-                        'btn-select',
-                        btn.textContent,
-                        fichesActives)
+                    templateRecherches.listeBtnSelectMotsCles(menuListeSaisieLibreIng, btnSelectIng, 'btn-select', btn.textContent, fichesActives)
                 })
 
             } if (btn.textContent.includes('Appareils')) {
                 const btnSelectApp = btnSelectListe[1]
-                templateRecherches.listeBtnSelectMotsCles(
-                    menuListeApp,
-                    btnSelectApp,
-                    'btn-select',
-                    btn.textContent,
-                    fichesActives)
+                templateRecherches.listeBtnSelectMotsCles(menuListeApp, btnSelectApp, 'btn-select', btn.textContent, fichesActives)
 
-                    // configuration de l'input du bouton
+                // configuration de l'input du bouton
                 btnSelectInput[1].addEventListener('input', (e) => {
                     const saisie = util.normalize(e.target.value)
                     let menuListeSaisieLibreApp = []
@@ -492,25 +479,14 @@ const FonctionRecherche = {
                             menuListeSaisieLibreApp.push(menuListeMot)
                         }
                     })
-
-                    templateRecherches.listeBtnSelectMotsCles(
-                        menuListeSaisieLibreApp,
-                        btnSelectApp,
-                        'btn-select',
-                        btn.textContent,
-                        fichesActives)
+                    templateRecherches.listeBtnSelectMotsCles(menuListeSaisieLibreApp, btnSelectApp, 'btn-select', btn.textContent, fichesActives)
                 })
 
             } if (btn.textContent.includes('Ustensiles')) {
                 const btnSelectUst = btnSelectListe[2]
-                templateRecherches.listeBtnSelectMotsCles(
-                    menuListeUst,
-                    btnSelectUst,
-                    'btn-select',
-                    btn.textContent,
-                    fichesActives)
+                templateRecherches.listeBtnSelectMotsCles(menuListeUst, btnSelectUst, 'btn-select', btn.textContent, fichesActives)
 
-                    // configuration de l'input du bouton
+                // configuration de l'input du bouton avec les fiches
                 btnSelectInput[2].addEventListener('input', (e) => {
                     const saisie = util.normalize(e.target.value)
                     let menuListeSaisieLibreUst = []
@@ -519,19 +495,14 @@ const FonctionRecherche = {
                             menuListeSaisieLibreUst.push(menuListeMot)
                         }
                     })
-
-                    templateRecherches.listeBtnSelectMotsCles(
-                        menuListeSaisieLibreUst,
-                        btnSelectUst,
-                        'btn-select',
-                        btn.textContent,
-                        fichesActives)
+                    templateRecherches.listeBtnSelectMotsCles(menuListeSaisieLibreUst, btnSelectUst, 'btn-select', btn.textContent, fichesActives)
                 })
             }
         })
     },
 
     actualiserAffichageResultats : (fichesActives) => {
+        // vider la section et créer l'élément pour chaque fiche ayant passé les critères de tri
         const conteneurFicheRecettes = document.querySelector('.resultats-recherche')
         conteneurFicheRecettes.innerHTML = ''
         fichesActives.forEach(fiche => ficheRecette(fiche, conteneurFicheRecettes))
@@ -539,31 +510,30 @@ const FonctionRecherche = {
         // Actualiser les menus select 
         FonctionRecherche.actualiserListesMotsCle(fichesActives)
     
-        // Si aucun résultat correspondant, afficher message adéquat
+        // Si aucun résultat correspondant (fichesActives vide), afficher message adéquat
         if (fichesActives.length === 0) {
             templateRecherches.messageResultatsVides()
         }
     },
 
+    // APPEL DANS templateRecherche :
+    // - à la création de l'input principal de recherche (l. 98)
+    // - lors de la création  et de la suppression des étiquettes de mots-clés (l. 144 & l. 178)
     lancementRecherche : (ensembleFiches) => {
-
-        // recherche par mot clé
-        let etapeTri0 = []
+        // tri des fiches par mots-clés : renvoie les fiches dans leur format original (json)
         const triParMotCle = FonctionRecherche.triParMotCle(ensembleFiches)
-        etapeTri0.push(triParMotCle)
-        let etapeTri1 = etapeTri0.flat()
-        FonctionRecherche.actualiserAffichageResultats(etapeTri1)
+        // actualiser les résultats affichés et les listes de mots-clés
+        FonctionRecherche.actualiserAffichageResultats(triParMotCle)
 
-        // recherche par saisie libre
+        // recherche par saisie libre : écoute de la valeur du champ de saisie
+        // tri dans les résultats donnés par le premier critère de recherche (par mots-clés)
         const champSaisie = document.querySelector('.recherche__saisie')
         const saisie = util.normalize(champSaisie.value)
+        const triParSaisieLibre = FonctionRecherche.triParSaisieLibre(triParMotCle, saisie)
 
-        let etapeTri2 = []
-        const triParSaisieLibre = FonctionRecherche.triParSaisieLibre(etapeTri1, saisie)
-        etapeTri2.push(triParSaisieLibre)
-
-        let etapeTri3 = etapeTri2.flat()
-        FonctionRecherche.actualiserAffichageResultats(etapeTri3)
+        // affichage final : actualiser les résultats affichés et les listes de mots-clés
+        // (avec les fiches ayant passé le second critère de tri)
+        FonctionRecherche.actualiserAffichageResultats(triParSaisieLibre)
 
         console.log(`critères de recherche = ${saisie} & ${FonctionRecherche.recupEtiquettesActives()}`)
     }
@@ -576,6 +546,5 @@ const FonctionRecherche = {
 const creationPage = () => {
     sectionRecherche()
     sectionResultatsRecherche(ensembleFiches)
-    FonctionRecherche.lancementRecherche(ensembleFiches)
 }
 creationPage()

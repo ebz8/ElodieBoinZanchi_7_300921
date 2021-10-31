@@ -387,23 +387,29 @@ const FonctionRecherche = {
     return etiquettesActives
   },
 
+  contient: (recette, saisie) => {
+    for (let i = 0; i < recette.length; i++) {
+      if (recette[i] === saisie) {
+        return true
+      }
+    }
+    return false
+  },
+
   triParSaisieLibre: (fichesActives, saisie) => {
     // Traitement des données des fiches actives pour faciliter itération
     // (chaque fiche devient un tableau qui est découpée en sous-tableaux)
     const contenusRecettes = FonctionRecherche.preTraitementRecettes(fichesActives)
     const longueurMin = 3
+    const regex = new RegExp(saisie)
 
     if (saisie.length > longueurMin - 1) {
       const fichesCorrespondantes = []
 
       for (let recettes of contenusRecettes) {
-        for (let recette of recettes) {
-        // transformation du contenu de chaque recette en string et vérifier si elle inclue la saisie
-
-          if (recette.toString().includes(saisie)) {
-            // récupère l'id de la fiche retenue et push dans tableau des fiches correspondant aux critères
-            fichesCorrespondantes.push(recettes[0])
-          }
+        const contenuParRecette = recettes.join(' ')
+        if (regex.test(contenuParRecette)) {
+          fichesCorrespondantes.push(recettes[0])
         }
       }
       // crée un tableau avec les fiches en json récupérées via leur id stockée dans fichesCorrespondantes

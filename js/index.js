@@ -76,7 +76,7 @@ const redacDry = {
     for (const cle in attributs) {
       element.setAttribute(cle, attributs[cle])
     }
-  },
+  }
 }
 
 //////////////////////////////////
@@ -455,6 +455,7 @@ const FonctionRecherche = {
         // configuration de l'input du bouton
         btnSelectInput[0].addEventListener('input', (e) => {
           const saisie = util.normalize(e.target.value)
+          console.log(saisie)
           const menuListeSaisieLibreIng = []
           Array.from(menuListeIng).forEach((menuListeMot) => {
             if (util.normalize(menuListeMot).includes(saisie)) {
@@ -541,5 +542,6 @@ const FonctionRecherche = {
 const creationPage = () => {
   sectionRecherche()
   sectionResultatsRecherche(ensembleFiches)
+  FonctionRecherche.lancementRecherche(ensembleFiches)
 }
 creationPage()

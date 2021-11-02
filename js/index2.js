@@ -409,7 +409,9 @@ const FonctionRecherche = {
       const fichesCorrespondantes = []
 
       for (let recettes of contenusRecettes) {
+        // tester le contenu de la recette transformé en string
         const contenuParRecette = recettes.join(' ')
+        // conserver seulement celles dont le contenu contient la saisie (stockée en regex)
         if (regex.test(contenuParRecette)) {
           fichesCorrespondantes.push(recettes[0])
         }

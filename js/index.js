@@ -55,6 +55,7 @@ const util = {
 
   normalize: (texte) => {
     return texte.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    // .trim() -> enlève les espaces avant et après
   }
 }
 
@@ -461,7 +462,6 @@ const FonctionRecherche = {
     menuListe.forEach((menuListeMot) => {
       if (util.normalize(menuListeMot).includes(saisie)) {
         menuListeSaisieLibre.push(menuListeMot)
-        console.log(menuListeSaisieLibre)
       }
     })
     return menuListeSaisieLibre
@@ -509,10 +509,8 @@ const FonctionRecherche = {
     const conteneurFicheRecettes = document.querySelector('.resultats-recherche')
     conteneurFicheRecettes.innerHTML = ''
     fichesActives.forEach(fiche => ficheRecette(fiche, conteneurFicheRecettes))
-
     // Actualiser les menus select
     FonctionRecherche.actualiserListesMotsCle(fichesActives)
-
     // Si aucun résultat correspondant (fichesActives vide), afficher message adéquat
     if (fichesActives.length === 0) {
       templateRecherches.messageResultatsVides()

@@ -359,17 +359,30 @@ const FonctionRecherche = {
     const tableauContenuxPrincipaux = []
     recettes.forEach((recette) => {
       const contenuPrincipalRecette = []
-
+      // [0] id
       contenuPrincipalRecette.push(recette.id)
+      // [1] : titre
       contenuPrincipalRecette.push(util.normalize(recette.name))
+      // [2] : description recette
       contenuPrincipalRecette.push(util.normalize(recette.description))
+      // [3] : ingrédients
+      const contenuIngredients = []
       recette.ingredients.map((ingredients) => {
-        contenuPrincipalRecette.push(util.normalize(ingredients.ingredient))
+        contenuIngredients.push(util.normalize(ingredients.ingredient))
       })
-      contenuPrincipalRecette.push(util.normalize(recette.appliance))
+      contenuPrincipalRecette.push(contenuIngredients.join(' '))
+      // [4] : appareils
+      const contenuAppareils = []
+      contenuAppareils.push(util.normalize(recette.appliance))
+      contenuPrincipalRecette.push(contenuAppareils.join(' '))
+
+      // [5] : ustensiles
+      const contenuUstensiles = []
       recette.ustensils.map((ustensile) => {
-        contenuPrincipalRecette.push(util.normalize(ustensile))
+        contenuUstensiles.push(util.normalize(ustensile))
       })
+      contenuPrincipalRecette.push(contenuUstensiles.join(' '))
+
       tableauContenuxPrincipaux.push(contenuPrincipalRecette)
     })
     return tableauContenuxPrincipaux
@@ -450,18 +463,18 @@ const FonctionRecherche = {
     }
   },
 
-  recupTermesDeRecherche: () => {
-    const termesDeRecherche = []
-    // récupérer la valeur saisie dans le champ de recherche principal
-    const champSaisie = document.querySelector('.recherche__saisie')
-    const saisie = util.normalize(champSaisie.value)
+  recupSaisie: () => {
     const longueurMin = 3
-    if (saisie.length > longueurMin - 1) {
-      termesDeRecherche.push(saisie)
+    const champSaisie = document.querySelector('.recherche__saisie').value
+    const champVide = ' '
+    const saisie = []
+
+    if (champSaisie.length > longueurMin - 1) {
+      saisie.push(util.normalize(champSaisie))
+      return saisie
+    } else {
+      return champVide
     }
-    // récupérer mots-clés
-    termesDeRecherche.push(FonctionRecherche.recupEtiquettesActives())
-    return termesDeRecherche.flat()
   },
 
   // APPEL DE LA FONCTION CI-DESSOUS DANS templateRecherche :
@@ -470,16 +483,22 @@ const FonctionRecherche = {
   lancementRecherche: (ensembleFiches) => {
     // PRÉ-TRAITEMENT DES DONNÉES
     const contenusRecettes = FonctionRecherche.preTraitementRecettes(ensembleFiches)
-    const mots = FonctionRecherche.recupTermesDeRecherche()
+    const saisie = FonctionRecherche.recupSaisie()
+    const motsCles = FonctionRecherche.recupEtiquettesActives()
 
     // RECHERCHE
     const fichesCorrespondantes = []
-    if (mots.length !== 0) {
+    if (saisie.length !== 0 || motsCles.length !== 0) {
       contenusRecettes.forEach(recettes => {
         // POUR CHAQUE FICHE CHECK QU'ELLE CONTIENT TOUS LES TERMES DE RECHERCHE
-        const contenuParRecette = recettes.join(' ')
+        const contenuParRecette = recettes.join('*').split('*')
+        const champsRechercheSaisie = `${contenuParRecette[1]} ${contenuParRecette[2]} ${contenuParRecette[3]}`
+        const champsRechercheMotsCles = `${contenuParRecette[3]} ${contenuParRecette[4]} ${contenuParRecette[5]}`
+
         const tableauContientMots = (tableau, mots) => mots.every(mot => tableau.includes(mot))
-        if (tableauContientMots(contenuParRecette, mots)) {
+
+        if (tableauContientMots(champsRechercheMotsCles, motsCles) &&
+        champsRechercheSaisie.includes(saisie)) {
           // PUSH ID FICHES RETENUES DANS TABLEAU
           fichesCorrespondantes.push(recettes[0])
         }
@@ -489,7 +508,7 @@ const FonctionRecherche = {
       // ACTUALISATION AFFICHAGE
       FonctionRecherche.actualiserAffichageResultats(fichesRetenues)
 
-      console.log(`termes de recherche : ${mots}`)
+      console.log(`termes de recherche : ${saisie} et ${motsCles}`)
       console.log(`nombre de résultats : ${fichesRetenues.length}`)
     }
   }

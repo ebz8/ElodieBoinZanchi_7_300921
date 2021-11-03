@@ -101,7 +101,7 @@ const templateRecherches = {
 
     // RECHERCHE : écoute du champ de saisie
     saisieFormulaireRecherche.addEventListener('input', e => {
-      FonctionRecherche.lancementRecherche(ensembleFiches)
+      FonctionRecherche.lancementRecherche()
     })
 
     return formulaireRecherche
@@ -119,7 +119,7 @@ const templateRecherches = {
       itemListe.addEventListener('click', (e) => {
         const motCleCible = e.target.textContent
         templateRecherches.etiquette(motCleCible, menuNom, fichesActives)
-        FonctionRecherche.lancementRecherche(ensembleFiches)
+        FonctionRecherche.lancementRecherche()
 
         // vider les champs de recherche des boutons
         const btnSelectInput = document.querySelectorAll('.btn-select__conteneur-saisie input')
@@ -184,7 +184,7 @@ const templateRecherches = {
     btnFermeture.addEventListener('click', (e) => {
       etiquette.remove()
       // RECHERCHE : actualiser la recherche
-      FonctionRecherche.lancementRecherche(ensembleFiches)
+      FonctionRecherche.lancementRecherche()
     })
     return etiquette
   },
@@ -352,9 +352,6 @@ const FonctionRecherche = {
     return recetteIdCorrespondante
   },
 
-  // pour chaque fiche, récupérer dans un tableau les champs suivants :
-  // [0] : id ; [1] : titre ; [2] : description ;
-  // [3] : ingrédietns ; [4] : appareils ; [5] : ustensiles.
   preTraitementRecettes: (recettes) => {
     const tableauContenuxPrincipaux = []
     recettes.forEach((recette) => {
@@ -405,7 +402,6 @@ const FonctionRecherche = {
     menuListe.forEach((menuListeMot) => {
       if (util.normalize(menuListeMot).includes(saisie)) {
         menuListeSaisieLibre.push(menuListeMot)
-        console.log(menuListeSaisieLibre)
       }
     })
     return menuListeSaisieLibre
@@ -477,28 +473,22 @@ const FonctionRecherche = {
     }
   },
 
-  // APPEL DE LA FONCTION CI-DESSOUS DANS templateRecherche :
-  // - à la création de l'input principal de recherche (l. 98)
-  // - lors de la création et de la suppression des étiquettes de mots-clés (l. 144 & l. 178)
-  lancementRecherche: (ensembleFiches) => {
-    // PRÉ-TRAITEMENT DES DONNÉES
+  // APPELS : l.104 (input principal), 122 & 187 (ajout & suppression étiquettes)
+  lancementRecherche: () => {
     const contenusRecettes = FonctionRecherche.preTraitementRecettes(ensembleFiches)
     const saisie = FonctionRecherche.recupSaisie()
     const motsCles = FonctionRecherche.recupEtiquettesActives()
+    const tableauContientMots = (tableau, mots) => mots.every(mot => tableau.includes(mot))
 
-    // RECHERCHE
     const fichesCorrespondantes = []
     if (saisie.length !== 0 || motsCles.length !== 0) {
       contenusRecettes.forEach(recettes => {
-        // POUR CHAQUE FICHE CHECK QU'ELLE CONTIENT TOUS LES TERMES DE RECHERCHE
+        // DIFFERENCIATION CHAMPS À FOUILLER SELON TYPE DE RECHERCHE (SAISIE / MOTS-CLÉS)
         const contenuParRecette = recettes.join('*').split('*')
         const champsRechercheSaisie = `${contenuParRecette[1]} ${contenuParRecette[2]} ${contenuParRecette[3]}`
         const champsRechercheMotsCles = `${contenuParRecette[3]} ${contenuParRecette[4]} ${contenuParRecette[5]}`
 
-        const tableauContientMots = (tableau, mots) => mots.every(mot => tableau.includes(mot))
-
-        if (tableauContientMots(champsRechercheMotsCles, motsCles) &&
-        champsRechercheSaisie.includes(saisie)) {
+        if (champsRechercheSaisie.includes(saisie) && tableauContientMots(champsRechercheMotsCles, motsCles)) {
           // PUSH ID FICHES RETENUES DANS TABLEAU
           fichesCorrespondantes.push(recettes[0])
         }
@@ -521,5 +511,6 @@ const FonctionRecherche = {
 const creationPage = () => {
   sectionRecherche()
   sectionResultatsRecherche(ensembleFiches)
+  FonctionRecherche.lancementRecherche()
 }
 creationPage()

@@ -353,9 +353,7 @@ const FonctionRecherche = {
     return recetteIdCorrespondante
   },
 
-  // pour chaque fiche, récupérer dans un tableau les champs suivants :
-  // [0] : id ; [1] : titre ; [2] : description ;
-  // [3] : ingrédietns ; [4] : appareils ; [5] : ustensiles.
+  // transformation du json en tableau
   preTraitementSaisie: (recettes) => {
     const tableauContenuxPrincipaux = []
     recettes.forEach((recette) => {

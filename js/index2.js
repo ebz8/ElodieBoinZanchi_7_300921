@@ -357,7 +357,8 @@ const FonctionRecherche = {
   // pour chaque fiche, récupérer dans un tableau les champs suivants :
   // [0] : id ; [1] : titre ; [2] : description ;
   // [3] : ingrédietns ; [4] : appareils ; [5] : ustensiles.
-  preTraitementRecettes: (recettes) => {
+  // transformation du json en tableau
+  preTraitementSaisie: (recettes) => {
     const tableauContenuxPrincipaux = []
     recettes.forEach((recette) => {
       const contenuPrincipalRecette = []
@@ -365,13 +366,27 @@ const FonctionRecherche = {
       contenuPrincipalRecette.push(recette.id)
       contenuPrincipalRecette.push(util.normalize(recette.name))
       contenuPrincipalRecette.push(util.normalize(recette.description))
-      for (let ingredients of recette.ingredients) {
+      recette.ingredients.map((ingredients) => {
         contenuPrincipalRecette.push(util.normalize(ingredients.ingredient))
-      }
+      })
+      tableauContenuxPrincipaux.push(contenuPrincipalRecette)
+    })
+    return tableauContenuxPrincipaux
+  },
+
+  preTraitementEtiquette: (recettes) => {
+    const tableauContenuxPrincipaux = []
+    recettes.forEach((recette) => {
+      const contenuPrincipalRecette = []
+
+      contenuPrincipalRecette.push(recette.id)
+      recette.ingredients.map((ingredients) => {
+        contenuPrincipalRecette.push(util.normalize(ingredients.ingredient))
+      })
       contenuPrincipalRecette.push(util.normalize(recette.appliance))
-      for (let ustensile of recette.ustensils) {
+      recette.ustensils.map((ustensile) => {
         contenuPrincipalRecette.push(util.normalize(ustensile))
-      }
+      })
       tableauContenuxPrincipaux.push(contenuPrincipalRecette)
     })
     return tableauContenuxPrincipaux
@@ -401,7 +416,7 @@ const FonctionRecherche = {
     const saisie = util.normalize(champSaisie.value)
     // Traitement des données des fiches actives pour faciliter itération
     // (chaque fiche devient un tableau qui est découpée en sous-tableaux)
-    const contenusRecettes = FonctionRecherche.preTraitementRecettes(fichesActives)
+    const contenusRecettes = FonctionRecherche.preTraitementSaisie(fichesActives)
     const longueurMin = 3
     const regex = new RegExp(saisie)
 
@@ -430,7 +445,7 @@ const FonctionRecherche = {
     // si des mots-clés sont sélectionnées, traiter les données des fiches actives pour faciliter itération
     // (chaque fiche devient un tableau qui est découpée en sous-tableaux)
     if (etiquettes.length > 0) {
-      const contenusRecettes = FonctionRecherche.preTraitementRecettes(fichesActives)
+      const contenusRecettes = FonctionRecherche.preTraitementEtiquette(fichesActives)
       const fichesCorrespondantes = []
 
       for (let recettes of contenusRecettes) {

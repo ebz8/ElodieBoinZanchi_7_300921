@@ -14,6 +14,37 @@ const ensembleFiches = [...recettes]
 ////////////////////////
 
 const util = {
+  preTraitementRecettes: (recettes) => {
+    const tableauContenuxPrincipaux = []
+    recettes.forEach((recette) => {
+      const contenuPrincipalRecette = []
+      // [0] id
+      contenuPrincipalRecette.push(recette.id)
+      // [1] : titre
+      contenuPrincipalRecette.push(util.normalize(recette.name))
+      // [2] : description recette
+      contenuPrincipalRecette.push(util.normalize(recette.description))
+      // [3] : ingrédients
+      const contenuIngredients = []
+      recette.ingredients.map((ingredients) => {
+        contenuIngredients.push(util.normalize(ingredients.ingredient))
+      })
+      contenuPrincipalRecette.push(contenuIngredients.join(' '))
+      // [4] : appareils
+      const contenuAppareils = []
+      contenuAppareils.push(util.normalize(recette.appliance))
+      contenuPrincipalRecette.push(contenuAppareils.join(' '))
+      // [5] : ustensiles
+      const contenuUstensiles = []
+      recette.ustensils.map((ustensile) => {
+        contenuUstensiles.push(util.normalize(ustensile))
+      })
+      contenuPrincipalRecette.push(contenuUstensiles.join(' '))
+      tableauContenuxPrincipaux.push(contenuPrincipalRecette)
+    })
+    return tableauContenuxPrincipaux
+  },
+
   recupListeIngredients: (fichesRecettes) => {
     const listeIngredients = new Set()
 
@@ -352,39 +383,6 @@ const FonctionRecherche = {
     return recetteIdCorrespondante
   },
 
-  preTraitementRecettes: (recettes) => {
-    const tableauContenuxPrincipaux = []
-    recettes.forEach((recette) => {
-      const contenuPrincipalRecette = []
-      // [0] id
-      contenuPrincipalRecette.push(recette.id)
-      // [1] : titre
-      contenuPrincipalRecette.push(util.normalize(recette.name))
-      // [2] : description recette
-      contenuPrincipalRecette.push(util.normalize(recette.description))
-      // [3] : ingrédients
-      const contenuIngredients = []
-      recette.ingredients.map((ingredients) => {
-        contenuIngredients.push(util.normalize(ingredients.ingredient))
-      })
-      contenuPrincipalRecette.push(contenuIngredients.join(' '))
-      // [4] : appareils
-      const contenuAppareils = []
-      contenuAppareils.push(util.normalize(recette.appliance))
-      contenuPrincipalRecette.push(contenuAppareils.join(' '))
-
-      // [5] : ustensiles
-      const contenuUstensiles = []
-      recette.ustensils.map((ustensile) => {
-        contenuUstensiles.push(util.normalize(ustensile))
-      })
-      contenuPrincipalRecette.push(contenuUstensiles.join(' '))
-
-      tableauContenuxPrincipaux.push(contenuPrincipalRecette)
-    })
-    return tableauContenuxPrincipaux
-  },
-
   recupEtiquettesActives: () => {
     const tableauEtiquettes = document.querySelectorAll('.etiquettes__liste li')
     const etiquettesActives = []
@@ -475,7 +473,7 @@ const FonctionRecherche = {
 
   // APPELS : l.104 (input principal), 122 & 187 (ajout & suppression étiquettes)
   lancementRecherche: () => {
-    const contenusRecettes = FonctionRecherche.preTraitementRecettes(ensembleFiches)
+    const contenusRecettes = util.preTraitementRecettes(ensembleFiches)
     const saisie = FonctionRecherche.recupSaisie()
     const motsCles = FonctionRecherche.recupEtiquettesActives()
     const tableauContientMots = (tableau, mots) => mots.every(mot => tableau.includes(mot))

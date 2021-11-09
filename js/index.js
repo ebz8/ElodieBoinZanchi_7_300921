@@ -463,7 +463,7 @@ const FonctionRecherche = {
     const champVide = ' '
     const saisie = []
 
-    if (champSaisie.length > longueurMin - 1) {
+    if (champSaisie.length >= longueurMin) {
       saisie.push(util.normalize(champSaisie))
       return saisie
     } else {

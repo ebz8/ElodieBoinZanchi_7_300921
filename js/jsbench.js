@@ -1725,30 +1725,55 @@ const recipes = [
   },
 ];
 
-
-
 const util = {
   normalize: (texte) => {
     return texte.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  }
+  },
+  
+  preTraitementRecettes: (recettes) => {
+    const tableauContenuxPrincipaux = [];
+    recettes.forEach((recette) => {
+      const contenuPrincipalRecette = [];
+      // [0] id
+      contenuPrincipalRecette.push(recette.id);
+      // [1] : titre
+      contenuPrincipalRecette.push(util.normalize(recette.name));
+      // [2] : description recette
+      contenuPrincipalRecette.push(util.normalize(recette.description));
+      // [3] : ingrédients
+      const contenuIngredients = [];
+      recette.ingredients.map((ingredients) => {
+        contenuIngredients.push(util.normalize(ingredients.ingredient));
+      });
+      contenuPrincipalRecette.push(contenuIngredients.join(' '));
+      // [4] : appareils
+      const contenuAppareils = [];
+      contenuAppareils.push(util.normalize(recette.appliance));
+      contenuPrincipalRecette.push(contenuAppareils.join(' '));
+      // [5] : ustensiles
+      const contenuUstensiles = [];
+      recette.ustensils.map((ustensile) => {
+        contenuUstensiles.push(util.normalize(ustensile));
+      });
+      contenuPrincipalRecette.push(contenuUstensiles.join(' '));
+      tableauContenuxPrincipaux.push(contenuPrincipalRecette);
+    });
+    return tableauContenuxPrincipaux;
+  },
 };
 
-
-
 const ensembleFiches = [...recipes];
+const contenusRecettes = util.preTraitementRecettes(ensembleFiches);
+
+// conditions de test
 const saisie = ['citrons'];
 const motsCles = ['blender'];
 
+//////////////////////////////////
+///// VERSION BOUCLES NATIVES ////
+//////////////////////////////////
 
-
-
-
-
-
-
-// V1 PROGRAMMATION FONCTIONNELLE (prétraitement spécifique pour la saisie)
 const FonctionRecherche = {
-
   rechercheRecetteParId: (id) => {
     const recetteIdCorrespondante = ensembleFiches.filter((recette) => id.includes(recette.id));
     return recetteIdCorrespondante;
@@ -1770,51 +1795,58 @@ const FonctionRecherche = {
     return tableauContenuxPrincipaux;
   },
 
-triParSaisieLibre: (fichesActives, saisie) => {
-  const contenusRecettes = FonctionRecherche.preTraitementSaisie(fichesActives);
-  const longueurMin = 3;
+  preTraitementEtiquette: (recettes) => {
+    const tableauContenuxPrincipaux = []
+    recettes.forEach((recette) => {
+      const contenuPrincipalRecette = []
 
-  if (saisie.length > longueurMin - 1) {
-    const fichesCorrespondantes = [];
+      contenuPrincipalRecette.push(recette.id)
+      recette.ingredients.map((ingredients) => {
+        contenuPrincipalRecette.push(util.normalize(ingredients.ingredient))
+      })
+      contenuPrincipalRecette.push(util.normalize(recette.appliance))
+      recette.ustensils.map((ustensile) => {
+        contenuPrincipalRecette.push(util.normalize(ustensile))
+      })
+      tableauContenuxPrincipaux.push(contenuPrincipalRecette)
+    })
+    return tableauContenuxPrincipaux
+  },
 
-    contenusRecettes.forEach(recettes => {
-      recettes.map(recette => {
-        if (recette.toString().includes(saisie)) {
-          fichesCorrespondantes.push(recettes[0]);
+  recupEtiquettesActives: () => {
+    const tableauEtiquettes = document.querySelectorAll('.etiquettes__liste li')
+    const etiquettesActives = []
+
+    for (let etiquette of tableauEtiquettes) {
+      etiquettesActives.push(util.normalize(etiquette.textContent))
+    }
+    return etiquettesActives
+  },
+
+  triParMotCle: (fichesActives) => {
+    // récupération du tableau contenant les mots-clés sélectionnés
+    const etiquettes = FonctionRecherche.recupEtiquettesActives()
+    // si des mots-clés sont sélectionnées, traiter les données des fiches actives pour faciliter itération
+    // (chaque fiche devient un tableau qui est découpée en sous-tableaux)
+    if (etiquettes.length > 0) {
+      const contenusRecettes = FonctionRecherche.preTraitementEtiquette(fichesActives)
+      const fichesCorrespondantes = []
+
+      for (let recettes of contenusRecettes) {
+        // pour chaque fiche (recettes), trier celles qui contiennent chacun des mots-clés sélectionnés (etiquettes)
+        const tableauContientMots = (tableau, mots) => mots.every(mot => tableau.includes(mot))
+        if (tableauContientMots(recettes, etiquettes)) {
+          // récupère l'id de la fiche retenue et push dans tableau des fiches correspondant aux critères
+          fichesCorrespondantes.push(recettes[0])
         }
-      });
-    });
-    const fichesRetenues = FonctionRecherche.rechercheRecetteParId(fichesCorrespondantes);
-    return fichesRetenues;
-  }
-  return fichesActives;
-},
-};
-FonctionRecherche.triParSaisieLibre(ensembleFiches, saisie);
+      }
+      // crée un tableau avec les fiches en json récupérées via leur id stockée dans fichesCorrespondantes
+      const fichesRetenues = FonctionRecherche.rechercheRecetteParId(fichesCorrespondantes)
 
-
-// VERSION 2 : BOUCLES NATIVES
-
-const FonctionRecherche = {
-  rechercheRecetteParId: (id) => {
-    const recetteIdCorrespondante = ensembleFiches.filter((recette) => id.includes(recette.id));
-    return recetteIdCorrespondante;
-  },
-
-  preTraitementSaisie: (recettes) => {
-    const tableauContenuxPrincipaux = [];
-    recettes.forEach((recette) => {
-      const contenuPrincipalRecette = [];
-
-      contenuPrincipalRecette.push(recette.id);
-      contenuPrincipalRecette.push(util.normalize(recette.name));
-      contenuPrincipalRecette.push(util.normalize(recette.description));
-      recette.ingredients.map((ingredients) => {
-        contenuPrincipalRecette.push(util.normalize(ingredients.ingredient));
-      });
-      tableauContenuxPrincipaux.push(contenuPrincipalRecette);
-    });
-    return tableauContenuxPrincipaux;
+      return fichesRetenues
+    }
+    // si pas de mot-clé sélectionné, renvoie le tableau intact
+    return fichesActives
   },
 
   triParSaisieLibre: (fichesActives, saisie) => {
@@ -1836,13 +1868,26 @@ const FonctionRecherche = {
     }
     return fichesActives;
   },
+
+  // APPEL DE LA FONCTION CI-DESSOUS DANS templateRecherche :
+  // - à la création de l'input principal de recherche (l. 98)
+  // - lors de la création et de la suppression des étiquettes de mots-clés (l. 144 & l. 178)
+  lancementRecherche: (ensembleFiches, saisie) => {
+    // recherche par saisie libre : écoute de la valeur du champ de saisie (renvoie les fiches dans leur format d'origine)
+    const triParSaisieLibre = FonctionRecherche.triParSaisieLibre(ensembleFiches, saisie)
+    // recherche par mots-clés : renvoie les fiches dans leur format original (json)
+    const triParMotCle = FonctionRecherche.triParMotCle(triParSaisieLibre)
+
+    console.log(`critères de recherche = ${saisie} & ${FonctionRecherche.recupEtiquettesActives()}.`)
+    console.log(`nombre de résultats : ${triParMotCle.length}`)
+  }
 };
-FonctionRecherche.triParSaisieLibre(ensembleFiches, saisie);
+FonctionRecherche.lancementRecherche(ensembleFiches, saisie);
 
 
-////////////////////////////////
-/// V3 FONCTION DE RECHERCHE ///
-////////////////////////////////
+//////////////////////////////////
+/// VERSION PROG FONCTIONNELLE ///
+//////////////////////////////////
 
 const FonctionRecherche = {
   rechercheRecetteParId: (id) => {
@@ -1885,7 +1930,6 @@ const FonctionRecherche = {
 
   // APPELS : l.104 (input principal), 122 & 187 (ajout & suppression étiquettes)
   lancementRecherche: (saisie, motsCles) => {
-    const contenusRecettes = FonctionRecherche.preTraitementRecettes(ensembleFiches);
     const tableauContientMots = (tableau, mots) => mots.every(mot => tableau.includes(mot));
 
     const fichesCorrespondantes = [];
@@ -1908,70 +1952,6 @@ const FonctionRecherche = {
 
 FonctionRecherche.lancementRecherche(saisie, motsCles);
 
-/// V3 FONCTION DE RECHERCHE ///
-// en ne conservant que la sasisie
 
-const FonctionRecherche = {
-  rechercheRecetteParId: (id) => {
-    const recetteIdCorrespondante = ensembleFiches.filter((recette) => id.includes(recette.id));
-    return recetteIdCorrespondante;
-  },
 
-  preTraitementRecettes: (recettes) => {
-    const tableauContenuxPrincipaux = [];
-    recettes.forEach((recette) => {
-      const contenuPrincipalRecette = [];
-      // [0] id
-      contenuPrincipalRecette.push(recette.id);
-      // [1] : titre
-      contenuPrincipalRecette.push(util.normalize(recette.name));
-      // [2] : description recette
-      contenuPrincipalRecette.push(util.normalize(recette.description));
-      // [3] : ingrédients
-      const contenuIngredients = [];
-      recette.ingredients.map((ingredients) => {
-        contenuIngredients.push(util.normalize(ingredients.ingredient));
-      });
-      contenuPrincipalRecette.push(contenuIngredients.join(' '));
-      // [4] : appareils
-      const contenuAppareils = [];
-      contenuAppareils.push(util.normalize(recette.appliance));
-      contenuPrincipalRecette.push(contenuAppareils.join(' '));
-
-      // [5] : ustensiles
-      const contenuUstensiles = [];
-      recette.ustensils.map((ustensile) => {
-        contenuUstensiles.push(util.normalize(ustensile));
-      });
-      contenuPrincipalRecette.push(contenuUstensiles.join(' '));
-
-      tableauContenuxPrincipaux.push(contenuPrincipalRecette);
-    });
-    return tableauContenuxPrincipaux;
-  },
-
-  // APPELS : l.104 (input principal), 122 & 187 (ajout & suppression étiquettes)
-  lancementRecherche: (saisie, motsCles) => {
-    const contenusRecettes = FonctionRecherche.preTraitementRecettes(ensembleFiches);
-    const tableauContientMots = (tableau, mots) => mots.every(mot => tableau.includes(mot));
-
-    const fichesCorrespondantes = [];
-    if (saisie.length !== 0 || motsCles.length !== 0) {
-      contenusRecettes.forEach(recettes => {
-        // DIFFERENCIATION CHAMPS À FOUILLER SELON TYPE DE RECHERCHE (SAISIE / MOTS-CLÉS)
-        const contenuParRecette = recettes.join('*').split('*');
-        const champsRechercheSaisie = `${contenuParRecette[1]} ${contenuParRecette[2]} ${contenuParRecette[3]}`;
-        const champsRechercheMotsCles = `${contenuParRecette[3]} ${contenuParRecette[4]} ${contenuParRecette[5]}`;
-
-        if (champsRechercheSaisie.includes(saisie) && tableauContientMots(champsRechercheMotsCles, motsCles)) {
-          fichesCorrespondantes.push(recettes[0]);
-        }
-      });
-      const fichesRetenues = FonctionRecherche.rechercheRecetteParId(fichesCorrespondantes);
-      console.log(fichesRetenues);
-    }
-  }
-};
-
-FonctionRecherche.lancementRecherche(saisie, motsCles);
 

@@ -372,11 +372,143 @@ const sectionResultatsRecherche = (ensembleFiches) => {
 }
 
 /////////////////////////////
+/// FONCTION DE RECHERCHE ///
+/////////////////////////////
+
+const FonctionRecherche = {
+
+  // matcher par id les fiches simplifiées retenues en résultats de recherche et fiches complètes du json
+  rechercheRecetteParId: (id) => {
+    const recetteIdCorrespondante = ensembleFiches.filter((recette) => id.includes(recette.id))
+    return recetteIdCorrespondante
+  },
+
+  recupEtiquettesActives: () => {
+    const tableauEtiquettes = document.querySelectorAll('.etiquettes__liste li')
+    const etiquettesActives = []
+
+    tableauEtiquettes.forEach(etiquette => {
+      etiquettesActives.push(util.normalize(etiquette.textContent))
+    })
+    return etiquettesActives
+  },
+
+  inputListeMotsCle: (menuListe, e) => {
+    const saisie = util.normalize(e.target.value)
+    const menuListeSaisieLibre = []
+
+    menuListe.forEach((menuListeMot) => {
+      if (util.normalize(menuListeMot).includes(saisie)) {
+        menuListeSaisieLibre.push(menuListeMot)
+      }
+    })
+    return menuListeSaisieLibre
+  },
+
+  actualiserListesMotsCle: (fichesActives) => {
+    const btnSelectApercu = document.querySelectorAll('.btn-select__apercu')
+    const btnSelectListe = document.querySelectorAll('.btn-select__liste')
+    const btnSelectInput = document.querySelectorAll('.btn-select__conteneur-saisie input')
+
+    const menuListeIng = util.recupListeIngredients(fichesActives)
+    const menuListeApp = util.recupListeAppareils(fichesActives)
+    const menuListeUst = util.recupListeUstensiles(fichesActives)
+
+    btnSelectApercu.forEach(btn => {
+      if (btn.textContent.includes('Ingrédients')) {
+        templateRecherches.listeBtnSelectMotsCles(menuListeIng, btnSelectListe[0], 'btn-select', btn.textContent, fichesActives)
+        // configuration de l'input interne de la liste
+        btnSelectInput[0].addEventListener('input', (e) => {
+          const menuListeSaisie = FonctionRecherche.inputListeMotsCle(menuListeIng, e)
+          templateRecherches.listeBtnSelectMotsCles(menuListeSaisie, btnSelectListe[0], 'btn-select', btn.textContent, fichesActives)
+        })
+      } if (btn.textContent.includes('Appareils')) {
+        // actualisation de la liste selon les fiches actives
+        templateRecherches.listeBtnSelectMotsCles(menuListeApp, btnSelectListe[1], 'btn-select', btn.textContent, fichesActives)
+        // configuration de l'input interne de la liste
+        btnSelectInput[1].addEventListener('input', (e) => {
+          const menuListeSaisie = FonctionRecherche.inputListeMotsCle(menuListeApp, e)
+          templateRecherches.listeBtnSelectMotsCles(menuListeSaisie, btnSelectListe[1], 'btn-select', btn.textContent, fichesActives)
+        })
+      } if (btn.textContent.includes('Ustensiles')) {
+        // actualisation de la liste selon les fiches actives
+        templateRecherches.listeBtnSelectMotsCles(menuListeUst, btnSelectListe[2], 'btn-select', btn.textContent, fichesActives)
+        // configuration de l'input interne de la liste
+        btnSelectInput[2].addEventListener('input', (e) => {
+          const menuListeSaisie = FonctionRecherche.inputListeMotsCle(menuListeUst, e)
+          templateRecherches.listeBtnSelectMotsCles(menuListeSaisie, btnSelectListe[2], 'btn-select', btn.textContent, fichesActives)
+        })
+      }
+    })
+  },
+
+  actualiserAffichageResultats: (fichesActives) => {
+    // vider la section et créer l'élément pour chaque fiche ayant passé les critères de tri
+    const conteneurFicheRecettes = document.querySelector('.resultats-recherche')
+    conteneurFicheRecettes.innerHTML = ''
+    fichesActives.forEach(fiche => ficheRecette(fiche, conteneurFicheRecettes))
+
+    // Actualiser les menus select
+    FonctionRecherche.actualiserListesMotsCle(fichesActives)
+
+    // Si aucun résultat correspondant (fichesActives vide), afficher message adéquat
+    if (fichesActives.length === 0) {
+      templateRecherches.messageResultatsVides()
+    }
+  },
+
+  recupSaisie: () => {
+    const longueurMin = 3
+    const champSaisie = document.querySelector('.recherche__saisie').value
+    const champVide = ' '
+    const saisie = []
+
+    if (champSaisie.length >= longueurMin) {
+      saisie.push(util.normalize(champSaisie))
+      return saisie
+    } else {
+      return champVide
+    }
+  },
+
+  // APPELS : l.104 (input principal), 122 & 187 (ajout & suppression étiquettes)
+  lancementRecherche: () => {
+    const contenusRecettes = util.preTraitementRecettes(ensembleFiches)
+    const saisie = FonctionRecherche.recupSaisie()
+    const motsCles = FonctionRecherche.recupEtiquettesActives()
+    const tableauContientMots = (tableau, mots) => mots.every(mot => tableau.includes(mot))
+
+    const fichesCorrespondantes = []
+    if (saisie.length !== 0 || motsCles.length !== 0) {
+      contenusRecettes.forEach(recettes => {
+        // DIFFERENCIATION CHAMPS À FOUILLER SELON TYPE DE RECHERCHE (SAISIE / MOTS-CLÉS)
+        const contenuParRecette = recettes.join('*').split('*')
+        const champsRechercheSaisie = `${contenuParRecette[1]} ${contenuParRecette[2]} ${contenuParRecette[3]}`
+        const champsRechercheMotsCles = `${contenuParRecette[3]} ${contenuParRecette[4]} ${contenuParRecette[5]}`
+
+        if (champsRechercheSaisie.includes(saisie) && tableauContientMots(champsRechercheMotsCles, motsCles)) {
+          // PUSH ID FICHES RETENUES DANS TABLEAU
+          fichesCorrespondantes.push(recettes[0])
+        }
+      })
+      // RECUP FICHES JSON VIA TABLEAU DES ID RETENUES
+      const fichesRetenues = FonctionRecherche.rechercheRecetteParId(fichesCorrespondantes)
+      // ACTUALISATION AFFICHAGE
+      FonctionRecherche.actualiserAffichageResultats(fichesRetenues)
+
+      console.log(`termes de recherche : ${saisie} et ${motsCles}`)
+      console.log(`nombre de résultats : ${fichesRetenues.length}`)
+    }
+  }
+}
+
+/////////////////////////////
 /// GENERATION DE LA PAGE ///
 /////////////////////////////
 
 const creationPage = () => {
   sectionRecherche()
   sectionResultatsRecherche(ensembleFiches)
+  FonctionRecherche.lancementRecherche()
 }
 creationPage()

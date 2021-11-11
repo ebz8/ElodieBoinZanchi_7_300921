@@ -6,4 +6,5 @@
 - Comparaison des performances pour chaque branche et sélection de la plus rapide (codes comparés conservés dans js/jsbench.js).
 
 
-La version de la fonctionnalité de recherche est publiée sur la branche main. Celle en boucles natives sur la branche secondaire du dépôt.
+La version en programmation fonctionnelle de la fonctionnalité de recherche est publiée sur la branche main.
+Celle en boucles natives sur la branche secondaire du dépôt.

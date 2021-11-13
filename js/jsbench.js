@@ -1940,8 +1940,10 @@ const FonctionRecherche = {
         const champsRechercheSaisie = `${contenuParRecette[1]} ${contenuParRecette[2]} ${contenuParRecette[3]}`;
         const champsRechercheMotsCles = `${contenuParRecette[3]} ${contenuParRecette[4]} ${contenuParRecette[5]}`;
 
-        if (champsRechercheSaisie.includes(saisie) && tableauContientMots(champsRechercheMotsCles, motsCles)) {
-          fichesCorrespondantes.push(recettes[0]);
+        if (champsRechercheSaisie.includes(saisie)) {
+          if (tableauContientMots(champsRechercheMotsCles, motsCles)) {
+            fichesCorrespondantes.push(recettes[0]);
+          }
         }
       });
       const fichesRetenues = FonctionRecherche.rechercheRecetteParId(fichesCorrespondantes);

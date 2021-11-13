@@ -2,11 +2,9 @@
 import { recettes } from './data/recipes.js'
 
 // DOM DE BASE
-// const corpsPage = document.querySelector('.js-page') // body
 const corpsContenuPage = document.querySelector('.js-document') // main
 
-// INITIALISATION ET STRUCTURE DES DONNEES
-// TODO : dictionnaire avec duplication du tableau des recettes
+// COPIE DU TABLEAU INITIAL DES RECETTES
 const ensembleFiches = [...recettes]
 
 ////////////////////////
@@ -375,12 +373,29 @@ const sectionResultatsRecherche = (ensembleFiches) => {
 /// FONCTION DE RECHERCHE ///
 /////////////////////////////
 
+// DONNEES PRÉ-TRAITÉES
+const contenusRecettes = util.preTraitementRecettes(ensembleFiches)
+
 const FonctionRecherche = {
 
   // matcher par id les fiches simplifiées retenues en résultats de recherche et fiches complètes du json
   rechercheRecetteParId: (id) => {
     const recetteIdCorrespondante = ensembleFiches.filter((recette) => id.includes(recette.id))
     return recetteIdCorrespondante
+  },
+
+  recupSaisie: () => {
+    const longueurMin = 3
+    const champSaisie = document.querySelector('.recherche__saisie').value
+    const champVide = ' '
+    const saisie = []
+
+    if (champSaisie.length >= longueurMin) {
+      saisie.push(util.normalize(champSaisie))
+      return saisie
+    } else {
+      return champVide
+    }
   },
 
   recupEtiquettesActives: () => {
@@ -416,6 +431,7 @@ const FonctionRecherche = {
 
     btnSelectApercu.forEach(btn => {
       if (btn.textContent.includes('Ingrédients')) {
+        // actualisation de la liste selon les fiches actives
         templateRecherches.listeBtnSelectMotsCles(menuListeIng, btnSelectListe[0], 'btn-select', btn.textContent, fichesActives)
         // configuration de l'input interne de la liste
         btnSelectInput[0].addEventListener('input', (e) => {
@@ -423,17 +439,13 @@ const FonctionRecherche = {
           templateRecherches.listeBtnSelectMotsCles(menuListeSaisie, btnSelectListe[0], 'btn-select', btn.textContent, fichesActives)
         })
       } if (btn.textContent.includes('Appareils')) {
-        // actualisation de la liste selon les fiches actives
         templateRecherches.listeBtnSelectMotsCles(menuListeApp, btnSelectListe[1], 'btn-select', btn.textContent, fichesActives)
-        // configuration de l'input interne de la liste
         btnSelectInput[1].addEventListener('input', (e) => {
           const menuListeSaisie = FonctionRecherche.inputListeMotsCle(menuListeApp, e)
           templateRecherches.listeBtnSelectMotsCles(menuListeSaisie, btnSelectListe[1], 'btn-select', btn.textContent, fichesActives)
         })
       } if (btn.textContent.includes('Ustensiles')) {
-        // actualisation de la liste selon les fiches actives
         templateRecherches.listeBtnSelectMotsCles(menuListeUst, btnSelectListe[2], 'btn-select', btn.textContent, fichesActives)
-        // configuration de l'input interne de la liste
         btnSelectInput[2].addEventListener('input', (e) => {
           const menuListeSaisie = FonctionRecherche.inputListeMotsCle(menuListeUst, e)
           templateRecherches.listeBtnSelectMotsCles(menuListeSaisie, btnSelectListe[2], 'btn-select', btn.textContent, fichesActives)
@@ -448,32 +460,16 @@ const FonctionRecherche = {
     conteneurFicheRecettes.innerHTML = ''
     fichesActives.forEach(fiche => ficheRecette(fiche, conteneurFicheRecettes))
 
-    // Actualiser les menus select
     FonctionRecherche.actualiserListesMotsCle(fichesActives)
 
-    // Si aucun résultat correspondant (fichesActives vide), afficher message adéquat
+    // Si aucun résultat correspondant, afficher message adéquat
     if (fichesActives.length === 0) {
       templateRecherches.messageResultatsVides()
     }
   },
 
-  recupSaisie: () => {
-    const longueurMin = 3
-    const champSaisie = document.querySelector('.recherche__saisie').value
-    const champVide = ' '
-    const saisie = []
-
-    if (champSaisie.length >= longueurMin) {
-      saisie.push(util.normalize(champSaisie))
-      return saisie
-    } else {
-      return champVide
-    }
-  },
-
   // APPELS : l.104 (input principal), 122 & 187 (ajout & suppression étiquettes)
   lancementRecherche: () => {
-    const contenusRecettes = util.preTraitementRecettes(ensembleFiches)
     const saisie = FonctionRecherche.recupSaisie()
     const motsCles = FonctionRecherche.recupEtiquettesActives()
     const tableauContientMots = (tableau, mots) => mots.every(mot => tableau.includes(mot))
@@ -486,9 +482,10 @@ const FonctionRecherche = {
         const champsRechercheSaisie = `${contenuParRecette[1]} ${contenuParRecette[2]} ${contenuParRecette[3]}`
         const champsRechercheMotsCles = `${contenuParRecette[3]} ${contenuParRecette[4]} ${contenuParRecette[5]}`
 
-        if (champsRechercheSaisie.includes(saisie) && tableauContientMots(champsRechercheMotsCles, motsCles)) {
-          // PUSH ID FICHES RETENUES DANS TABLEAU
-          fichesCorrespondantes.push(recettes[0])
+        if (champsRechercheSaisie.includes(saisie)) {
+          if (tableauContientMots(champsRechercheMotsCles, motsCles)) {
+            fichesCorrespondantes.push(recettes[0])
+          }
         }
       })
       // RECUP FICHES JSON VIA TABLEAU DES ID RETENUES

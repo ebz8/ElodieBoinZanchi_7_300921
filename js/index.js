@@ -483,7 +483,7 @@ const FonctionRecherche = {
         const champsRechercheMotsCles = `${contenuParRecette[3]} ${contenuParRecette[4]} ${contenuParRecette[5]}`
 
         if (champsRechercheSaisie.includes(saisie)) {
-          if (tableauContientMots(champsRechercheMotsCles, motsCles)) {
+          if (tableauContientMots(champsRechercheMotsCles.split(' '), motsCles)) {
             fichesCorrespondantes.push(recettes[0])
           }
         }

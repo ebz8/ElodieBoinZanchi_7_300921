@@ -549,5 +549,6 @@ const FonctionRecherche = {
 const creationPage = () => {
   sectionRecherche()
   sectionResultatsRecherche(ensembleFiches)
+  FonctionRecherche.lancementRecherche()
 }
 creationPage()

@@ -480,10 +480,10 @@ const FonctionRecherche = {
         // DIFFERENCIATION CHAMPS À FOUILLER SELON TYPE DE RECHERCHE (SAISIE / MOTS-CLÉS)
         const contenuParRecette = recettes.join('*').split('*')
         const champsRechercheSaisie = `${contenuParRecette[1]} ${contenuParRecette[2]} ${contenuParRecette[3]}`
-        const champsRechercheMotsCles = `${contenuParRecette[3]} ${contenuParRecette[4]} ${contenuParRecette[5]}`
+        const champsRechercheMotsCles = `${contenuParRecette[3]} ${contenuParRecette[4]} ${contenuParRecette[5]}`.split(' ')
 
         if (champsRechercheSaisie.includes(saisie)) {
-          if (tableauContientMots(champsRechercheMotsCles.split(' '), motsCles)) {
+          if (tableauContientMots(champsRechercheMotsCles, motsCles)) {
             fichesCorrespondantes.push(recettes[0])
           }
         }

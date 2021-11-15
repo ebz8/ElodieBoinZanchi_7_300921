@@ -25,9 +25,9 @@ const util = {
       // [3] : ingrédients
       const contenuIngredients = []
       recette.ingredients.map((ingredients) => {
-        contenuIngredients.push(util.normalize(ingredients.ingredient))
+        contenuIngredients.push(`+${util.normalize(ingredients.ingredient)}+`)
       })
-      contenuPrincipalRecette.push(contenuIngredients.join('+'))
+      contenuPrincipalRecette.push(contenuIngredients.join(''))
       // [4] : appareils
       const contenuAppareils = []
       contenuAppareils.push(util.normalize(recette.appliance))

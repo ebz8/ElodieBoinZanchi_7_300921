@@ -31,7 +31,6 @@ const util = {
       // [4] : appareils
       const contenuAppareils = []
       contenuAppareils.push(util.normalize(recette.appliance))
-      // contenuPrincipalRecette.push(contenuAppareils.join('+'))
       contenuPrincipalRecette.push(`+${contenuAppareils.join('+')}+`)
       // [5] : ustensiles
       const contenuUstensiles = []

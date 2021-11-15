@@ -27,17 +27,18 @@ const util = {
       recette.ingredients.map((ingredients) => {
         contenuIngredients.push(util.normalize(ingredients.ingredient))
       })
-      contenuPrincipalRecette.push(contenuIngredients.join(' '))
+      contenuPrincipalRecette.push(contenuIngredients.join('+'))
       // [4] : appareils
       const contenuAppareils = []
       contenuAppareils.push(util.normalize(recette.appliance))
-      contenuPrincipalRecette.push(contenuAppareils.join(' '))
+      // contenuPrincipalRecette.push(contenuAppareils.join('+'))
+      contenuPrincipalRecette.push(`+${contenuAppareils.join('+')}+`)
       // [5] : ustensiles
       const contenuUstensiles = []
       recette.ustensils.map((ustensile) => {
         contenuUstensiles.push(util.normalize(ustensile))
       })
-      contenuPrincipalRecette.push(contenuUstensiles.join(' '))
+      contenuPrincipalRecette.push(contenuUstensiles.join('+'))
       tableauContenuxPrincipaux.push(contenuPrincipalRecette)
     })
     return tableauContenuxPrincipaux
@@ -480,7 +481,7 @@ const FonctionRecherche = {
         // DIFFERENCIATION CHAMPS À FOUILLER SELON TYPE DE RECHERCHE (SAISIE / MOTS-CLÉS)
         const contenuParRecette = recettes.join('*').split('*')
         const champsRechercheSaisie = `${contenuParRecette[1]} ${contenuParRecette[2]} ${contenuParRecette[3]}`
-        const champsRechercheMotsCles = `${contenuParRecette[3]} ${contenuParRecette[4]} ${contenuParRecette[5]}`.split(' ')
+        const champsRechercheMotsCles = `${contenuParRecette[3]} ${contenuParRecette[4]} ${contenuParRecette[5]}`.split('+')
 
         if (champsRechercheSaisie.includes(saisie)) {
           if (tableauContientMots(champsRechercheMotsCles, motsCles)) {

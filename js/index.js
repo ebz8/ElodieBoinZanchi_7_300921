@@ -36,9 +36,10 @@ const util = {
       // [5] : ustensiles
       const contenuUstensiles = []
       recette.ustensils.map((ustensile) => {
-        contenuUstensiles.push(util.normalize(ustensile))
+        contenuUstensiles.push(`+${util.normalize(ustensile)}+`)
       })
-      contenuPrincipalRecette.push(contenuUstensiles.join('+'))
+      contenuPrincipalRecette.push(contenuUstensiles.join(''))
+
       tableauContenuxPrincipaux.push(contenuPrincipalRecette)
     })
     return tableauContenuxPrincipaux
